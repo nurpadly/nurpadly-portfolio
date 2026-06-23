@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="shortcut icon" href="assets/favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Detail — Nur Padly</title>
+<meta name="description" content="Case studies and project breakdowns by Nur Padly — 2D Background Artist">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#13151e;--bg3:#1a1d28;--bg4:#21253a;
+  --ink:#eaecf0;--ink2:#8b90a0;--ink3:#4a4f64;
+  --accent:#7c9ef8;--accent2:#a0b4fa;--accent3:rgba(124,158,248,0.1);
+  --border:#252830;--border2:#2e3348;
+  --font-h:'Syne',sans-serif;--font-b:'Space Grotesk',sans-serif;--font-m:'Space Mono',monospace;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight:400;line-height:1.7;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;background:rgba(15,17,23,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:padding 0.3s}
+nav.shrink{padding:0.8rem 3rem}
+.nav-logo{font-family:var(--font-h);font-size:1rem;font-weight:800;letter-spacing:0.08em;color:var(--ink);text-decoration:none;text-transform:uppercase}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+.nav-links a{font-family:var(--font-m);font-size:0.68rem;letter-spacing:0.12em;color:var(--ink2);text-decoration:none;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--ink);transition:all 0.3s}
+.mob-menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.5rem 3rem;flex-direction:column;gap:1.2rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:var(--font-m);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink2);text-decoration:none}
+
+/* ── PAGE HEADER ── */
+.page-header{padding:9rem 3rem 5rem;border-bottom:1px solid var(--border);max-width:1300px;margin:0 auto}
+.ph-eyebrow{font-family:var(--font-m);font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.8rem}
+.ph-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--accent);display:block}
+.ph-title{font-family:var(--font-h);font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:0.95;letter-spacing:-0.03em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem}
+.ph-title .dim{color:var(--ink3)}
+.ph-sub{max-width:560px;font-size:0.95rem;color:var(--ink2);line-height:1.9}
+.ph-meta{display:flex;gap:2rem;margin-top:2.5rem;flex-wrap:wrap}
+.ph-stat{display:flex;flex-direction:column;gap:0.2rem}
+.ph-stat-n{font-family:var(--font-h);font-size:2rem;font-weight:800;color:var(--accent);line-height:1}
+.ph-stat-l{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3)}
+
+/* ── MAIN WRAP ── */
+.main-wrap{max-width:1300px;margin:0 auto;padding:4rem 3rem 8rem}
+
+/* ── FILTERS ── */
+.filter-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.filter-pills{display:flex;gap:0.4rem;flex-wrap:wrap}
+.fp{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.4rem 1rem;border:1px solid var(--border2);background:transparent;color:var(--ink3);cursor:pointer;transition:all 0.25s}
+.fp:hover,.fp.active{border-color:var(--accent);color:var(--accent);background:var(--accent3)}
+.count-label{font-family:var(--font-m);font-size:0.62rem;color:var(--ink3)}
+.count-label span{color:var(--accent)}
+
+/* ── CASE STUDY CARD ── */
+.cs-list{display:flex;flex-direction:column;gap:2px}
+
+.cs-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  transition:border-color 0.4s var(--ease),
+             box-shadow 0.4s var(--ease);
+  overflow:hidden;
+}
+.cs-card:hover{border-color:var(--border2)}
+.cs-card.open{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px rgba(124,158,248,0.12),
+             0 8px 32px rgba(124,158,248,0.06);
+}
+
+/* Card Header */
+.cs-trigger{width:100%;display:flex;align-items:center;gap:1.5rem;padding:1.8rem 2rem;background:transparent;border:none;cursor:pointer;text-align:left;transition:background 0.3s}
+.cs-trigger:hover{background:var(--bg3)}
+.cs-card.open .cs-trigger{background:var(--bg3)}
+
+.cs-num{font-family:var(--font-h);font-size:2.5rem;font-weight:800;color:rgba(124,158,248,0.12);line-height:1;letter-spacing:-0.05em;flex-shrink:0;width:60px;transition:color 0.3s}
+.cs-card.open .cs-num{color:rgba(124,158,248,0.3)}
+
+.cs-trigger-meta{flex:1;min-width:0}
+.cs-type-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;flex-wrap:wrap}
+.cs-type-badge{font-family:var(--font-m);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid var(--border2);color:var(--ink3)}
+.cs-card.open .cs-type-badge{border-color:rgba(124,158,248,0.4);color:var(--accent)}
+.cs-year{font-family:var(--font-m);font-size:0.55rem;letter-spacing:0.1em;color:var(--ink3)}
+.cs-name{font-family:var(--font-h);font-size:clamp(1.1rem,2.5vw,1.6rem);font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.5rem}
+.cs-tagline{font-size:0.82rem;color:var(--ink2)}
+
+.cs-trigger-right{display:flex;align-items:center;gap:1.5rem;flex-shrink:0}
+.cs-chips{display:flex;gap:0.4rem;flex-wrap:wrap}
+.cs-chip{font-family:var(--font-m);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.55rem;background:var(--bg4);color:var(--ink3);border:1px solid var(--border)}
+.cs-arrow{width:36px;height:36px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ink3);font-size:1rem;transition:all 0.35s var(--ease)}
+.cs-card.open .cs-arrow{border-color:var(--accent);color:var(--accent);transform:rotate(45deg)}
+
+/* Card Body — smooth slide down */
+.cs-body{
+  display:block;
+  max-height:0;
+  overflow:hidden;
+  border-top:0px solid var(--border);
+  transition:max-height 0.55s cubic-bezier(.25,.46,.45,.94),
+             border-top-width 0.3s,
+             opacity 0.4s var(--ease);
+  opacity:0;
+}
+.cs-card.open .cs-body{
+  max-height:3000px;
+  border-top:1px solid var(--border);
+  opacity:1;
+  transition:max-height 0.65s cubic-bezier(.25,.46,.45,.94),
+             border-top-width 0.3s,
+             opacity 0.35s 0.1s var(--ease);
+}
+
+/* Cover image — fade in when card opens */
+.cs-cover,.cs-cover-ph{
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 0.5s 0.15s var(--ease), transform 0.5s 0.15s var(--ease);
+}
+.cs-card.open .cs-cover,.cs-card.open .cs-cover-ph{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Cover image */
+.cs-cover{width:100%;height:320px;object-fit:cover;display:block;background:var(--bg4)}
+.cs-cover-ph{width:100%;height:200px;background:linear-gradient(135deg,var(--bg3),var(--bg4));display:flex;align-items:center;justify-content:center}
+.cs-cover-ph-text{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3)}
+
+/* Smooth entrance for card inner elements */
+.cs-overview{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border);
+  opacity:0;transform:translateY(6px);
+  transition:opacity 0.45s 0.2s var(--ease),transform 0.45s 0.2s var(--ease);
+}
+.cs-card.open .cs-overview{opacity:1;transform:translateY(0)}
+.cs-content{
+  padding:2.5rem 2rem;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.5s 0.25s var(--ease),transform 0.5s 0.25s var(--ease);
+}
+.cs-card.open .cs-content{opacity:1;transform:translateY(0)}
+
+/* Description */
+.cs-desc-block{margin-bottom:2.5rem}
+.cs-section-label{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:0.6rem}
+.cs-section-label::before{content:'';width:12px;height:1.5px;background:var(--accent)}
+.cs-description{font-size:0.92rem;color:var(--ink2);line-height:2}
+
+.cs-ov-item{background:var(--bg2);padding:1.2rem 1.5rem}
+.cs-ov-label{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.4rem}
+.cs-ov-val{font-size:0.88rem;color:var(--ink);font-weight:500}
+
+/* Staggered step items entrance */
+.cs-step{
+  border:1px solid var(--border);margin-bottom:2px;overflow:hidden;
+  opacity:0;transform:translateX(-10px);
+  transition:opacity 0.4s var(--ease),transform 0.4s var(--ease),border-color 0.25s;
+}
+.cs-card.open .cs-step{opacity:1;transform:translateX(0)}
+.cs-card.open .cs-step:nth-child(1){transition-delay:0.30s}
+.cs-card.open .cs-step:nth-child(2){transition-delay:0.38s}
+.cs-card.open .cs-step:nth-child(3){transition-delay:0.46s}
+.cs-card.open .cs-step:nth-child(4){transition-delay:0.54s}
+.cs-card.open .cs-step:nth-child(5){transition-delay:0.60s}
+.cs-step-trigger{width:100%;display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.5rem;background:transparent;border:none;cursor:pointer;text-align:left;transition:background 0.25s}
+.cs-step-trigger:hover{background:var(--bg3)}
+.cs-step.open .cs-step-trigger{background:var(--bg3)}
+
+.cs-step-n{font-family:var(--font-h);font-size:1.4rem;font-weight:800;color:var(--accent3);line-height:1;width:32px;flex-shrink:0;transition:color 0.3s}
+.cs-step.open .cs-step-n{color:var(--accent)}
+.cs-step-info{flex:1}
+.cs-step-title{font-family:var(--font-h);font-size:0.95rem;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.2rem}
+.cs-step-sub{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.1em;color:var(--ink3);text-transform:uppercase}
+.cs-step-chevron{font-size:0.8rem;color:var(--ink3);transition:transform 0.3s;flex-shrink:0}
+.cs-step.open .cs-step-chevron{transform:rotate(180deg);color:var(--accent)}
+
+/* Step body — smooth slide */
+.cs-step-body{
+  display:block;
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  border-top:0px solid var(--border);
+  transition:max-height 0.45s cubic-bezier(.25,.46,.45,.94),
+             opacity 0.35s var(--ease),
+             border-top-width 0.2s,
+             padding 0.35s var(--ease);
+  padding:0 1.5rem;
+}
+.cs-step.open .cs-step-body{
+  max-height:1200px;
+  opacity:1;
+  border-top:1px solid var(--border);
+  padding:1.5rem;
+  transition:max-height 0.5s cubic-bezier(.25,.46,.45,.94),
+             opacity 0.4s 0.08s var(--ease),
+             border-top-width 0.2s,
+             padding 0.35s var(--ease);
+}
+.cs-step-desc{font-size:0.85rem;color:var(--ink2);line-height:1.9;margin-bottom:1.2rem}
+
+/* Step image gallery */
+.step-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.step-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--bg4);cursor:pointer;border:1px solid var(--border)}
+.step-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s var(--ease)}
+.step-thumb:hover img{transform:scale(1.07)}
+.step-thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg3),var(--bg4))}
+.step-thumb-ph span{font-family:var(--font-m);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);text-align:center;padding:0.5rem}
+.step-thumb-over{position:absolute;inset:0;background:rgba(15,17,23,0.7);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s}
+.step-thumb:hover .step-thumb-over{opacity:1}
+.step-thumb-over span{font-size:1.2rem;color:var(--accent)}
+
+/* Empty step */
+.step-empty{padding:1.5rem;border:1px dashed var(--border2);text-align:center;background:var(--bg)}
+.se-text{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3)}
+
+/* Tags */
+.cs-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.cs-tag{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.7rem;border:1px solid var(--border);color:var(--ink3)}
+
+/* ── LIGHTBOX ── */
+#lb{position:fixed;inset:0;background:rgba(5,5,10,0.97);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;padding:2rem}
+#lb.open{opacity:1;pointer-events:all}
+.lb-wrap{position:relative;max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center}
+.lb-img-box{display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem}
+.lb-img-box img{max-width:88vw;max-height:75vh;object-fit:contain;display:block;box-shadow:0 40px 100px rgba(0,0,0,0.8)}
+.lb-info{text-align:center}
+.lb-title{font-family:var(--font-h);font-size:1.1rem;font-weight:800;text-transform:uppercase;color:var(--ink);margin-bottom:0.3rem}
+.lb-sub{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent)}
+.lb-x{position:fixed;top:1.5rem;right:1.5rem;background:var(--bg3);border:1px solid var(--border2);color:var(--ink2);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all 0.2s}
+.lb-x:hover{border-color:var(--accent);color:var(--accent)}
+.lb-nav{position:fixed;top:50%;transform:translateY(-50%);background:rgba(19,21,30,0.9);border:1px solid var(--border2);color:var(--ink2);width:44px;height:72px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all 0.2s}
+.lb-nav:hover{border-color:var(--accent);color:var(--accent)}
+#lb-prev{left:1.2rem}
+#lb-next{right:1.2rem}
+.lb-counter{font-family:var(--font-m);font-size:0.6rem;color:var(--ink3);margin-top:0.5rem;letter-spacing:0.1em}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:5rem 2rem;border:1px dashed var(--border)}
+.es-icon{font-size:3rem;margin-bottom:1rem;opacity:0.1}
+.es-title{font-family:var(--font-h);font-size:1.2rem;font-weight:800;text-transform:uppercase;color:var(--ink3);margin-bottom:0.5rem}
+.es-sub{font-family:var(--font-m);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.f-logo{font-family:var(--font-h);font-size:0.9rem;font-weight:800;text-transform:uppercase;color:var(--ink)}
+.f-logo span{color:var(--accent)}
+.f-copy{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.f-links{display:flex;gap:1.5rem}
+.f-links a{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color 0.2s}
+.f-links a:hover{color:var(--accent)}
+
+/* ── BACK TO TOP ── */
+#btt{position:fixed;bottom:2rem;right:2rem;width:42px;height:42px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:all 0.3s;z-index:200;font-family:var(--font-h);font-weight:800}
+#btt.show{opacity:1;transform:translateY(0)}
+#btt:hover{background:var(--accent2)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease)}
+.reveal.on{opacity:1;transform:none}
+
+/* ── MOBILE ── */
+/* Prevent horizontal scroll */
+html,body{max-width:100%;overflow-x:hidden}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .mob-menu{padding:1.5rem}
+  .page-header{padding:7rem 1.5rem 3rem}
+  .main-wrap{padding:2.5rem 1.5rem 5rem}
+  .ph-title{font-size:clamp(2.5rem,10vw,4rem)}
+  .ph-meta{gap:1.5rem}
+  .cs-trigger{padding:1.2rem;gap:1rem}
+  .cs-trigger-right{display:none}
+  .cs-overview{grid-template-columns:1fr 1fr}
+  .cs-content{padding:1.5rem 1.2rem}
+  .cs-num{width:44px;font-size:2rem}
+  .step-gallery{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+  footer{padding:2rem 1.5rem;flex-direction:column;align-items:flex-start;gap:1rem}
+  .lb-nav{display:none}
+  .filter-bar{flex-direction:column;align-items:flex-start;gap:0.8rem}
+}
+
+@media(max-width:600px){
+  .page-header{padding:6.5rem 1.2rem 2.5rem}
+  .main-wrap{padding:2rem 1.2rem 4rem}
+  .ph-title{font-size:clamp(2rem,12vw,3rem)}
+  .ph-sub{font-size:0.82rem}
+  .ph-stat-n{font-size:1.8rem}
+  .cs-trigger{padding:1rem}
+  .cs-num{display:none}
+  .cs-name{font-size:1rem}
+  .cs-overview{grid-template-columns:1fr}
+  .cs-content{padding:1.2rem 1rem}
+  .cs-step-trigger{padding:1rem}
+  .cs-step-body{padding:1rem}
+  .step-gallery{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:4px}
+  footer{padding:1.5rem 1.2rem}
+  .filter-pills{gap:0.3rem}
+  .fp{font-size:0.58rem;padding:0.35rem 0.7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">NP<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="mob-menu" id="mob-menu">
+    <a href="index.html">Home</a>
+    <a href="index.html#gallery">Gallery</a>
+    <a href="projects.html">Projects</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-eyebrow">Case Studies &amp; Project Breakdowns</div>
+  <h1 class="ph-title">PROJECT <span class="dim">DETAIL</span></h1>
+  <p class="ph-sub">A behind-the-scenes look at how each project comes to life — from initial sketches and props design to final layered backgrounds. Every step, documented.</p>
+  <div class="ph-meta">
+    <div class="ph-stat"><div class="ph-stat-n" id="stat-total">0</div><div class="ph-stat-l">Projects</div></div>
+    <div class="ph-stat"><div class="ph-stat-n" id="stat-steps">0</div><div class="ph-stat-l">Process Stages</div></div>
+    <div class="ph-stat"><div class="ph-stat-n" id="stat-images">0</div><div class="ph-stat-l">Images</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+  <!-- Filter bar -->
+  <div class="filter-bar reveal">
+    <div class="filter-pills">
+      <button class="fp active" data-f="all">All Projects</button>
+      <button class="fp" data-f="game">Game</button>
+      <button class="fp" data-f="animation">Animation</button>
+      <button class="fp" data-f="personal">Personal</button>
+    </div>
+    <div class="count-label">Showing <span id="count-shown">0</span> projects</div>
+  </div>
+
+  <!-- Case Study List -->
+  <div class="cs-list" id="cs-list">
+    <div class="empty-state" id="empty-state">
+      <div class="es-icon">&#9998;</div>
+      <div class="es-title">No projects yet</div>
+      <div class="es-sub">Add your first case study via Admin Panel</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">NUR <span>PADLY</span></div>
+  <div class="f-copy">&copy; 2026 — 2D Background Artist</div>
+  <div class="f-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#gallery">Gallery</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button id="btt" title="Back to top">&#8593;</button>
+
+<!-- LIGHTBOX -->
+<div id="lb">
+  <button class="lb-x" id="lb-x">&times;</button>
+  <button class="lb-nav" id="lb-prev">&#8592;</button>
+  <button class="lb-nav" id="lb-next">&#8594;</button>
+  <div class="lb-wrap">
+    <div class="lb-img-box" id="lb-box"></div>
+    <div class="lb-info">
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-sub" id="lb-sub"></div>
+      <div class="lb-counter" id="lb-counter"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG
+const PROJECTS_KEY = 'np_projects_v1';
+let projects = [];
+let lbImages  = [];
+let lbCur     = 0;
+
+// ── NAV
+const ham = document.getElementById('ham');
+const mob = document.getElementById('mob-menu');
+ham.addEventListener('click', () => mob.classList.toggle('open'));
+document.querySelectorAll('.mob-menu a').forEach(a => a.addEventListener('click', () => mob.classList.remove('open')));
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('shrink', scrollY > 50);
+  document.getElementById('btt').classList.toggle('show', scrollY > 400);
+});
+document.getElementById('btt').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// ── REVEAL
+const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── LOAD PROJECTS
+async function loadProjects() {
+  // 1. UTAMA: Baca dari projects.json (permanen)
+  let jsonData = [];
+  try {
+    const res = await fetch('assets/projects.json?v=' + Date.now());
+    if (res.ok) {
+      const text = await res.text();
+      if (text.trim() && text.trim() !== '[]') {
+        jsonData = JSON.parse(text);
+      }
+    }
+  } catch(e) {}
+
+  // 2. TAMBAHAN: Baca dari localStorage (data terbaru belum di-sync)
+  let localData = [];
+  try {
+    const raw = localStorage.getItem(PROJECTS_KEY);
+    if (raw) localData = JSON.parse(raw);
+  } catch(e) {}
+
+  // Gabungkan — projects.json sebagai base, localStorage sebagai tambahan
+  const combined = [...jsonData];
+  localData.forEach(item => {
+    const isDuplicate = combined.some(j => j.id === item.id);
+    if (!isDuplicate) combined.push(item);
+  });
+
+  projects = combined;
+  renderProjects();
+  updateStats();
+  setTimeout(() => updateStats(), 100);
+}
+
+// ── RENDER — build once, then show/hide via filter
+function renderProjects(filter = 'all') {
+  const list  = document.getElementById('cs-list');
+  const empty = document.getElementById('empty-state');
+
+  // First render: build all cards into DOM
+  if (list.querySelectorAll('.cs-card').length === 0) {
+    if (projects.length === 0) {
+      list.innerHTML = '';
+      list.appendChild(empty);
+      empty.style.display = 'block';
+      document.getElementById('count-shown').textContent = 0;
+      return;
+    }
+    empty.style.display = 'none';
+    list.innerHTML = '';
+
+    projects.forEach((proj, pi) => {
+      const card = buildCard(proj, pi);
+      list.appendChild(card);
+      setTimeout(() => ro.observe(card), 50);
+    });
+  }
+
+  // Show/hide based on filter
+  applyFilter(filter);
+}
+
+function applyFilter(filter) {
+  const cards  = document.querySelectorAll('.cs-card');
+  let visible  = 0;
+
+  cards.forEach(card => {
+    const cat   = card.dataset.cat || 'game';
+    const show  = (filter === 'all' || cat === filter);
+    if (show) {
+      card.style.display = '';
+      visible++;
+    } else {
+      // Close first if open, then hide
+      card.classList.remove('open');
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('count-shown').textContent = visible;
+
+  const empty = document.getElementById('empty-state');
+  if (visible === 0) {
+    empty.style.display = 'block';
+    empty.style.borderColor = 'var(--border)';
+    empty.querySelector('.es-title').textContent = 'No projects in this category';
+    empty.querySelector('.es-sub').textContent   = 'Try selecting a different filter';
+  } else {
+    empty.style.display = 'none';
+  }
+}
+
+function buildCard(proj, pi) {
+  const card = document.createElement('div');
+  card.className = 'cs-card reveal';
+  card.dataset.id  = proj.id;
+  card.dataset.cat = proj.category || 'game';
+
+  // Collect all images for lightbox
+  const allImages = [];
+  (proj.steps || []).forEach(step => {
+    (step.images || []).forEach(img => allImages.push({ src: img.url, title: step.title, sub: proj.title }));
+  });
+
+  card.innerHTML = `
+    <button class="cs-trigger" onclick="toggleCard('${proj.id}')">
+      <div class="cs-num">${String(pi + 1).padStart(2,'0')}</div>
+      <div class="cs-trigger-meta">
+        <div class="cs-type-row">
+          <span class="cs-type-badge">${proj.category || 'Game'}</span>
+          <span class="cs-year">${proj.year || '2025'}</span>
+        </div>
+        <div class="cs-name">${proj.title}</div>
+        <div class="cs-tagline">${proj.tagline || ''}</div>
+      </div>
+      <div class="cs-trigger-right">
+        <div class="cs-chips">${(proj.tools || []).map(t => `<span class="cs-chip">${t}</span>`).join('')}</div>
+        <div class="cs-arrow">+</div>
+      </div>
+    </button>
+    <div class="cs-body">
+      ${proj.coverUrl
+        ? `<img class="cs-cover" src="${proj.coverUrl}" alt="${proj.title}" loading="lazy">`
+        : `<div class="cs-cover-ph"><span class="cs-cover-ph-text">Cover Image</span></div>`}
+      <div class="cs-overview">
+        <div class="cs-ov-item"><div class="cs-ov-label">Client / Studio</div><div class="cs-ov-val">${proj.client || '—'}</div></div>
+        <div class="cs-ov-item"><div class="cs-ov-label">Engine / Platform</div><div class="cs-ov-val">${proj.platform || '—'}</div></div>
+        <div class="cs-ov-item"><div class="cs-ov-label">Total Assets</div><div class="cs-ov-val">${proj.assetCount || '—'}</div></div>
+      </div>
+      <div class="cs-content">
+        <div class="cs-desc-block">
+          <div class="cs-section-label">About This Project</div>
+          <div class="cs-description">${proj.description || ''}</div>
+        </div>
+        <div class="cs-process">
+          <div class="cs-section-label">Process Breakdown</div>
+          <div class="cs-steps-grid">
+            ${(proj.steps || []).map((step, si) => `
+              <div class="cs-step" id="step-${proj.id}-${si}">
+                <button class="cs-step-trigger" onclick="toggleStep('${proj.id}',${si})">
+                  <div class="cs-step-n">${String(si + 1).padStart(2,'0')}</div>
+                  <div class="cs-step-info">
+                    <div class="cs-step-title">${step.title}</div>
+                    <div class="cs-step-sub">${(step.images || []).length} image${(step.images || []).length !== 1 ? 's' : ''}</div>
+                  </div>
+                  <span class="cs-step-chevron">&#9660;</span>
+                </button>
+                <div class="cs-step-body">
+                  <div class="cs-step-desc">${step.description || ''}</div>
+                  ${(step.images || []).length > 0
+                    ? `<div class="step-gallery">${(step.images || []).map((img) => `
+                        <div class="step-thumb" onclick="openLB(${JSON.stringify(allImages).replace(/"/g,'&quot;')},${allImages.findIndex(x=>x.src===img.url)})">
+                          <img src="${img.url}" alt="${img.caption || step.title}" loading="lazy">
+                          <div class="step-thumb-over"><span>+</span></div>
+                        </div>`).join('')}</div>`
+                    : `<div class="step-empty"><div class="se-text">No images added yet</div></div>`}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
+        ${(proj.tags || []).length > 0
+          ? `<div class="cs-tags">${proj.tags.map(t => `<span class="cs-tag">${t}</span>`).join('')}</div>`
+          : ''}
+      </div>
+    </div>`;
+
+  return card;
+}
+
+// ── TOGGLE CARD — smooth
+function toggleCard(id) {
+  const card = document.querySelector(`.cs-card[data-id="${id}"]`);
+  if (!card) return;
+  const wasOpen = card.classList.contains('open');
+
+  // Close all others first with slight stagger
+  document.querySelectorAll('.cs-card.open').forEach(c => {
+    if (c !== card) c.classList.remove('open');
+  });
+
+  if (!wasOpen) {
+    // Small delay so closing animation of others doesn't conflict
+    requestAnimationFrame(() => {
+      card.classList.add('open');
+      // Scroll to card smoothly after animation starts
+      setTimeout(() => {
+        const offset = card.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }, 120);
+    });
+  } else {
+    card.classList.remove('open');
+  }
+}
+
+// ── TOGGLE STEP — smooth
+function toggleStep(projId, stepIdx) {
+  const step = document.getElementById(`step-${projId}-${stepIdx}`);
+  if (!step) return;
+  step.classList.toggle('open');
+}
+
+// ── FILTER
+document.querySelectorAll('.fp').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fp').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilter(btn.dataset.f);
+  });
+});
+
+// ── LIGHTBOX
+function openLB(images, idx) {
+  lbImages = images;
+  lbCur = idx;
+  showLBImage();
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function showLBImage() {
+  const img = lbImages[lbCur];
+  const box = document.getElementById('lb-box');
+  box.style.opacity = '0';
+  setTimeout(() => {
+    box.innerHTML = '';
+    if (img.src) {
+      const i = new Image();
+      i.src = img.src;
+      i.style.cssText = 'max-width:88vw;max-height:75vh;object-fit:contain;display:block;box-shadow:0 40px 100px rgba(0,0,0,0.8)';
+      box.appendChild(i);
+    }
+    document.getElementById('lb-title').textContent = img.title || '';
+    document.getElementById('lb-sub').textContent   = img.sub   || '';
+    document.getElementById('lb-counter').textContent = (lbCur + 1) + ' / ' + lbImages.length;
+    box.style.transition = 'opacity 0.25s';
+    box.style.opacity = '1';
+  }, 180);
+}
+function closeLB() { document.getElementById('lb').classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('lb-x').addEventListener('click', closeLB);
+document.getElementById('lb').addEventListener('click', e => { if (e.target === document.getElementById('lb')) closeLB(); });
+document.getElementById('lb-prev').addEventListener('click', () => { lbCur = (lbCur - 1 + lbImages.length) % lbImages.length; showLBImage(); });
+document.getElementById('lb-next').addEventListener('click', () => { lbCur = (lbCur + 1) % lbImages.length; showLBImage(); });
+
+// Swipe
+let tx = 0;
+document.getElementById('lb').addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+document.getElementById('lb').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) { lbCur = dx < 0 ? (lbCur+1)%lbImages.length : (lbCur-1+lbImages.length)%lbImages.length; showLBImage(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLB();
+  if (e.key === 'ArrowLeft' && document.getElementById('lb').classList.contains('open')) { lbCur=(lbCur-1+lbImages.length)%lbImages.length; showLBImage(); }
+  if (e.key === 'ArrowRight' && document.getElementById('lb').classList.contains('open')) { lbCur=(lbCur+1)%lbImages.length; showLBImage(); }
+});
+
+// ── STATS
+function animateCount(el, target) {
+  const start = parseInt(el.textContent) || 0;
+  if (start === target) return;
+  const dur  = 900;
+  const step = 16;
+  const inc  = (target - start) / (dur / step);
+  let cur = start;
+  const t = setInterval(() => {
+    cur = Math.min(cur + inc, target);
+    el.textContent = Math.floor(cur);
+    if (cur >= target) { el.textContent = target; clearInterval(t); }
+  }, step);
+}
+
+function updateStats() {
+  const totalProjects = projects.length;
+  const totalSteps    = projects.reduce((a,p) => a + (p.steps||[]).length, 0);
+  const totalImages   = projects.reduce((a,p) => a + (p.steps||[]).reduce((b,s) => b + (s.images||[]).length, 0), 0);
+
+  animateCount(document.getElementById('stat-total'),  totalProjects);
+  animateCount(document.getElementById('stat-steps'),  totalSteps);
+  animateCount(document.getElementById('stat-images'), totalImages);
+}
+
+// Observe stats section so it animates when scrolled into view
+const statsObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      updateStats();
+      statsObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+const statsEl = document.querySelector('.ph-meta');
+if (statsEl) statsObs.observe(statsEl);
+
+loadProjects();
+// Also update immediately in case stats section is already visible
+setTimeout(() => updateStats(), 100);
+</script>
+</body>
+</html>
