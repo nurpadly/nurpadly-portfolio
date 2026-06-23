@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="shortcut icon" href="assets/favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Nur Padly Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#13151e;--bg3:#1a1d28;--bg4:#21253a;
+  --ink:#eaecf0;--ink2:#8b90a0;--ink3:#4a4f64;
+  --lime:#7c9ef8;--lime2:#a0b4fa;
+  --red:#ff5555;--red2:rgba(255,85,85,0.1);
+  --border:#252830;--border2:#2e3348;
+  --font-h:'Syne',sans-serif;--font-b:'Space Grotesk',sans-serif;--font-m:'Space Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight:400;line-height:1.6;min-height:100vh}
+
+/* ── LOGIN ── */
+#login-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:2rem}
+#login-screen.hide{display:none}
+.ls-box{background:var(--bg2);border:1px solid var(--border2);padding:3rem;width:100%;max-width:400px}
+.ls-logo{font-family:var(--font-h);font-size:1.5rem;font-weight:800;color:var(--ink);text-transform:uppercase;margin-bottom:0.3rem}
+.ls-logo span{color:var(--lime)}
+.ls-sub{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);margin-bottom:2.5rem}
+.ls-label{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.5rem}
+.ls-input{width:100%;background:var(--bg3);border:1px solid var(--border);padding:0.9rem 1rem;color:var(--ink);font-family:var(--font-m);font-size:1rem;outline:none;transition:border-color 0.2s;letter-spacing:0.12em;margin-bottom:1rem}
+.ls-input:focus{border-color:var(--lime)}
+.ls-error{font-family:var(--font-m);font-size:0.62rem;color:var(--red);letter-spacing:0.1em;margin-bottom:1rem;display:none}
+.ls-error.show{display:block}
+.ls-hint{font-family:var(--font-m);font-size:0.58rem;color:var(--ink3);margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);line-height:1.7}
+.ls-hint span{color:var(--lime)}
+
+/* ── ADMIN APP ── */
+#admin-app{display:none;min-height:100vh}
+#admin-app.show{display:block}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-left{display:flex;align-items:center;gap:1rem}
+.tb-logo{font-family:var(--font-h);font-size:0.9rem;font-weight:800;text-transform:uppercase;color:var(--ink)}
+.tb-logo span{color:var(--lime)}
+.tb-badge{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.7rem;background:rgba(198,241,53,0.1);border:1px solid rgba(198,241,53,0.3);color:var(--lime)}
+.tb-right{display:flex;align-items:center;gap:0.8rem}
+.tb-link{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink2);text-decoration:none;padding:0.4rem 0.8rem;border:1px solid var(--border);transition:all 0.2s}
+.tb-link:hover{border-color:var(--lime);color:var(--lime)}
+
+/* ── LAYOUT ── */
+.admin-main{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 53px)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2rem;overflow-y:auto}
+.sb-title{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+.stat-box{background:var(--bg);padding:1.2rem 1rem}
+.stat-n{font-family:var(--font-h);font-size:2rem;font-weight:800;color:var(--lime);line-height:1}
+.stat-l{font-family:var(--font-m);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-top:0.3rem}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:1.5px dashed var(--border2);padding:2rem 1rem;text-align:center;cursor:pointer;transition:all 0.25s;position:relative;background:var(--bg);border-radius:0}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--lime);background:rgba(198,241,53,0.03)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.uz-icon{font-size:2rem;margin-bottom:0.6rem;color:var(--lime);opacity:0.6}
+.uz-main{font-family:var(--font-h);font-size:0.85rem;font-weight:700;text-transform:uppercase;color:var(--ink);margin-bottom:0.3rem}
+.uz-sub{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.1em;color:var(--ink3);text-transform:uppercase;line-height:1.8}
+
+/* ── CLOUDINARY STATUS ── */
+.cloud-status{padding:1rem;border:1px solid var(--border);background:var(--bg3)}
+.cs-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.4rem}
+.cs-row:last-child{margin-bottom:0}
+.cs-label{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.cs-val{font-family:var(--font-m);font-size:0.62rem;color:var(--lime)}
+.cs-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ── CONTENT ── */
+.content{padding:2rem;overflow-y:auto}
+.content-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.ch-title{font-family:var(--font-h);font-size:1.5rem;font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;color:var(--ink)}
+.ch-title span{color:var(--lime)}
+
+/* ── GALLERY GRID ── */
+.admin-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.5rem}
+.ag-item{position:relative;background:var(--bg3);aspect-ratio:16/9;overflow:hidden;group}
+.ag-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s}
+.ag-item:hover .ag-img{transform:scale(1.05)}
+.ag-over{position:absolute;inset:0;background:rgba(10,10,10,0.85);display:flex;flex-direction:column;justify-content:flex-end;padding:0.8rem;opacity:0;transition:opacity 0.3s}
+.ag-item:hover .ag-over{opacity:1}
+.ag-title{font-family:var(--font-h);font-size:0.8rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;text-transform:uppercase;line-height:1.2}
+.ag-cat{font-family:var(--font-m);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--lime);margin-bottom:0.5rem}
+.ag-actions{display:flex;gap:0.3rem}
+.ag-uploading{position:absolute;inset:0;background:rgba(10,10,10,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem}
+.progress-bar{width:80%;height:3px;background:var(--border2);overflow:hidden}
+.progress-fill{height:100%;background:var(--lime);width:0;transition:width 0.3s}
+.progress-text{font-family:var(--font-m);font-size:0.6rem;color:var(--lime);letter-spacing:0.1em}
+.ag-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg4)}
+.ag-ph-text{font-family:var(--font-m);font-size:0.55rem;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase}
+
+/* ── EMPTY STATE ── */
+.empty-state{grid-column:1/-1;text-align:center;padding:4rem 2rem}
+.es-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.15}
+.es-title{font-family:var(--font-h);font-size:1rem;font-weight:700;text-transform:uppercase;color:var(--ink3);margin-bottom:0.4rem}
+.es-sub{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+
+/* ── BUTTONS ── */
+.btn{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.55rem 1.1rem;border:1px solid;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;background:transparent}
+.btn-lime{background:var(--lime);color:var(--bg);border-color:var(--lime);font-family:var(--font-h);font-weight:700;font-size:0.7rem}
+.btn-lime:hover{background:var(--lime2)}
+.btn-ghost{color:var(--ink2);border-color:var(--border2)}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.btn-danger{color:var(--red);border-color:rgba(255,85,85,0.3)}
+.btn-danger:hover{background:var(--red2);border-color:var(--red)}
+.btn-sm{padding:0.3rem 0.6rem;font-size:0.55rem}
+
+/* ── EDIT MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;padding:1.5rem}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);padding:2.5rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:var(--font-h);font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.02em;color:var(--ink);margin-bottom:0.3rem}
+.modal-sub{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:2rem}
+.modal-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;margin-bottom:1.5rem;border:1px solid var(--border)}
+.field{margin-bottom:1.2rem}
+.field label{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.45rem}
+.field input,.field textarea,.field select{width:100%;background:var(--bg3);border:1px solid var(--border);padding:0.8rem 1rem;color:var(--ink);font-family:var(--font-b);font-size:0.88rem;outline:none;transition:border-color 0.2s;appearance:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--lime)}
+.field textarea{resize:vertical;min-height:80px}
+.modal-actions{display:flex;gap:0.8rem;margin-top:1.5rem}
+
+/* ── SETUP NOTICE ── */
+.setup-notice{background:var(--bg3);border:1px solid rgba(198,241,53,0.25);padding:1.5rem;margin-bottom:1.5rem}
+.sn-title{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem}
+.sn-text{font-size:0.82rem;color:var(--ink2);line-height:1.9}
+.sn-text code{font-family:var(--font-m);font-size:0.72rem;background:var(--bg4);padding:0.15rem 0.5rem;color:var(--lime)}
+.sn-input-row{display:flex;gap:0.8rem;margin-top:1rem;align-items:flex-end;flex-wrap:wrap}
+.sn-field{flex:1}
+.sn-field label{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.4rem}
+.sn-field input{width:100%;background:var(--bg);border:1px solid var(--border);padding:0.7rem 0.9rem;color:var(--ink);font-family:var(--font-m);font-size:0.8rem;outline:none;transition:border-color 0.2s}
+.sn-field input:focus{border-color:var(--lime)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg2);border:1px solid var(--lime);color:var(--lime);font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.9rem 1.5rem;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.35s;max-width:340px;line-height:1.6}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.error{border-color:var(--red);color:var(--red)}
+
+/* ── PRESET WARNING ── */
+.preset-warning{display:none;background:rgba(255,85,85,0.06);border:1px solid rgba(255,85,85,0.3);padding:1rem 1.2rem;margin-top:1rem}
+.preset-warning.show{display:block}
+.pw-text{font-family:var(--font-m);font-size:0.62rem;color:var(--red);line-height:1.8;letter-spacing:0.05em}
+.pw-text a{color:var(--red);text-decoration:underline}
+
+@media(max-width:768px){
+  .admin-main{grid-template-columns:1fr}
+  .sidebar{border-right:none;border-bottom:1px solid var(--border);max-height:none}
+  .admin-gallery{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="ls-box">
+    <div class="ls-logo">NUR <span>PADLY</span></div>
+    <div class="ls-sub">Portfolio Admin Panel</div>
+    <label class="ls-label">Admin Password</label>
+    <input type="password" class="ls-input" id="ls-pass" placeholder="Enter password" autocomplete="off">
+    <div class="ls-error" id="ls-error">&#10005; &nbsp;Password salah. Coba lagi.</div>
+    <button class="btn btn-lime" id="ls-btn" style="width:100%;justify-content:center;padding:1rem">Masuk Admin Panel &#8594;</button>
+    <div class="ls-hint">
+      Password default: <span>nurpadly2024</span><br>
+      Untuk ganti: buka file ini, cari <span>ADMIN_PASSWORD</span>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="admin-app">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-logo">NUR <span>PADLY</span></div>
+      <div class="tb-badge">&#9679; Admin Panel</div>
+    </div>
+    <div class="tb-right">
+      <a href="index.html" class="tb-link" target="_blank">&#8599; Lihat Website</a>
+      <a href="admin-projects.html" class="tb-link">&#9998; Projects Admin</a>
+      <button class="btn btn-ghost" id="logout-btn" style="font-size:0.6rem;padding:0.4rem 0.8rem">Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-main">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- Cloudinary Status -->
+      <div>
+        <div class="sb-title">Cloudinary Status</div>
+        <div class="cloud-status">
+          <div class="cs-row"><span class="cs-label">Status</span><span style="display:flex;align-items:center;gap:0.4rem"><span class="cs-dot"></span><span class="cs-val" id="cs-status">Connected</span></span></div>
+          <div class="cs-row"><span class="cs-label">Cloud</span><span class="cs-val" id="cs-cloud">dwahzqqst</span></div>
+          <div class="cs-row"><span class="cs-label">Folder</span><span class="cs-val">nurpadly-gallery</span></div>
+          <div class="cs-row"><span class="cs-label">Preset</span><span class="cs-val" id="cs-preset-display">—</span></div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div>
+        <div class="sb-title">Gallery Stats</div>
+        <div class="stats-grid">
+          <div class="stat-box"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total</div></div>
+          <div class="stat-box"><div class="stat-n" id="s-game">0</div><div class="stat-l">Game BG</div></div>
+          <div class="stat-box"><div class="stat-n" id="s-anim">0</div><div class="stat-l">Animation</div></div>
+          <div class="stat-box"><div class="stat-n" id="s-matte">0</div><div class="stat-l">Matte</div></div>
+          <div class="stat-box"><div class="stat-n" id="s-fantasy">0</div><div class="stat-l">Fantasy</div></div>
+          <div class="stat-box"><div class="stat-n" id="s-env">0</div><div class="stat-l">Environment</div></div>
+        </div>
+      </div>
+
+      <!-- Upload Zone -->
+      <div>
+        <div class="sb-title">Upload Karya Baru</div>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="file-input" accept="image/*" multiple>
+          <div class="uz-icon">&#8679;</div>
+          <div class="uz-main">Pilih Gambar</div>
+          <div class="uz-sub">
+            Drag & drop atau klik<br>
+            JPG / PNG / WEBP<br>
+            <span style="color:rgba(198,241,53,0.5)">Langsung tersimpan di Cloudinary</span>
+          </div>
+        </div>
+        <div class="preset-warning" id="preset-warning">
+          <div class="pw-text">
+            &#9888; Upload Preset belum diisi!<br>
+            Isi kolom "Upload Preset" di bawah dulu sebelum upload gambar.<br>
+            <a href="https://cloudinary.com/console/settings/upload" target="_blank">Buat preset di Cloudinary &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preset Setup -->
+      <div>
+        <div class="sb-title">Setup Upload Preset</div>
+        <div style="font-family:var(--font-m);font-size:0.6rem;color:var(--ink3);line-height:1.9;margin-bottom:1rem">
+          Masukkan nama <strong style="color:var(--lime)">Unsigned Upload Preset</strong> dari Cloudinary kamu. Buat di:<br>
+          Settings → Upload → Upload Presets → Add preset → Signing mode: <strong style="color:var(--lime)">Unsigned</strong> → Folder: <strong style="color:var(--lime)">nurpadly-gallery</strong>
+        </div>
+        <div class="field" style="margin-bottom:0.8rem">
+          <label>Upload Preset Name</label>
+          <input type="text" id="preset-input" placeholder="contoh: nurpadly_unsigned" style="background:var(--bg);border:1px solid var(--border);padding:0.8rem 1rem;color:var(--ink);font-family:var(--font-m);font-size:0.8rem;width:100%;outline:none">
+        </div>
+        <button class="btn btn-lime" id="save-preset-btn" style="width:100%;justify-content:center">&#10003; Simpan Preset</button>
+      </div>
+
+      <!-- Actions -->
+      <div>
+        <div class="sb-title">Actions</div>
+        <div style="background:rgba(124,158,248,0.08);border:1px solid rgba(124,158,248,0.25);padding:1rem;margin-bottom:0.8rem">
+          <div style="font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);margin-bottom:0.5rem">&#9432; Cara simpan permanen</div>
+          <div style="font-family:var(--font-m);font-size:0.58rem;color:var(--ink2);line-height:1.9">
+            1. Upload karya selesai<br>
+            2. Klik <strong style="color:var(--lime)">Download gallery.json</strong><br>
+            3. Taruh di folder <strong style="color:var(--lime)">assets/</strong><br>
+            4. Upload ulang ke Netlify
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.6rem">
+          <button class="btn btn-lime" id="dl-json" style="justify-content:center">&#8595; Download gallery.json</button>
+          <button class="btn btn-danger" id="clear-all-btn" style="justify-content:center">&#10005; Hapus Semua Data</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="content-header">
+        <div class="ch-title">Gallery <span>Management</span></div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+          <span style="font-family:var(--font-m);font-size:0.6rem;color:var(--ink3);align-self:center">
+            Karya tersimpan permanen di Cloudinary &#9729;
+          </span>
+        </div>
+      </div>
+
+      <!-- Setup notice jika preset belum ada -->
+      <div class="setup-notice" id="setup-notice" style="display:none">
+        <div class="sn-title">&#9432; Langkah Pertama Kali</div>
+        <div class="sn-text">
+          Sebelum upload gambar, kamu perlu membuat <strong>Unsigned Upload Preset</strong> di Cloudinary:<br><br>
+          1. Buka <a href="https://cloudinary.com/console/settings/upload" target="_blank" style="color:var(--lime)">Cloudinary Settings → Upload</a><br>
+          2. Scroll ke <strong>Upload Presets</strong> → klik <strong>Add upload preset</strong><br>
+          3. Set <strong>Signing mode</strong> → <code>Unsigned</code><br>
+          4. Set <strong>Folder</strong> → <code>nurpadly-gallery</code><br>
+          5. Klik <strong>Save</strong><br>
+          6. Copy nama preset → paste di kolom <strong>"Upload Preset Name"</strong> di sidebar kiri<br>
+          7. Klik <strong>Simpan Preset</strong>
+        </div>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="admin-gallery" id="admin-gallery">
+        <div class="empty-state">
+          <div class="es-icon">&#128444;</div>
+          <div class="es-title">Belum ada karya</div>
+          <div class="es-sub">Upload gambar pertama kamu di sidebar kiri</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal-box">
+    <div class="modal-title">Edit Artwork</div>
+    <div class="modal-sub" id="edit-modal-sub">Update detail karya ini</div>
+    <img class="modal-thumb" id="modal-thumb" src="" alt="">
+    <div class="field">
+      <label>Judul Karya *</label>
+      <input type="text" id="f-title" placeholder="contoh: Forest Realm">
+    </div>
+    <div class="field">
+      <label>Kategori *</label>
+      <select id="f-cat">
+        <option value="game">Game Background</option>
+        <option value="animation">Animation Background</option>
+        <option value="matte">Matte Painting</option>
+        <option value="fantasy">Fantasy Environment</option>
+        <option value="environment">Environment</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Deskripsi</label>
+      <textarea id="f-desc" placeholder="Deskripsi singkat karya ini..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-lime" id="modal-save-btn">Simpan &#8594;</button>
+      <button class="btn btn-ghost" id="modal-cancel-btn">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+//  KONFIGURASI — GANTI JIKA PERLU
+// ══════════════════════════════════════════
+const ADMIN_PASSWORD  = 'nurpadly2024';   // ganti password di sini
+const CLOUD_NAME      = 'dwahzqqst';      // Cloud name kamu
+const GALLERY_FOLDER  = 'nurpadly-gallery';
+const PRESET_STORAGE  = 'np_upload_preset';
+const GALLERY_STORAGE = 'np_cloudinary_gallery';
+// ══════════════════════════════════════════
+
+const DEFAULT_PRESET = 'ml_default_gallery'; // preset kamu
+
+const CAT_LABELS = {
+  game:'Game Background', animation:'Animation Background',
+  matte:'Matte Painting', fantasy:'Fantasy Environment', environment:'Environment'
+};
+
+let gallery  = [];   // array of artwork objects
+let editingId = null;
+let uploadPreset = '';
+
+// ── INIT ─────────────────────────────────
+function init() {
+  loadPreset();
+  loadGallery();
+  renderGallery();
+  updateStats();
+  checkSetupNotice();
+}
+
+function loadPreset() {
+  // Gunakan preset yang sudah tersimpan, atau pakai default
+  uploadPreset = localStorage.getItem(PRESET_STORAGE) || DEFAULT_PRESET;
+  if(!localStorage.getItem(PRESET_STORAGE)) {
+    localStorage.setItem(PRESET_STORAGE, DEFAULT_PRESET);
+  }
+  document.getElementById('preset-input').value = uploadPreset;
+  document.getElementById('cs-preset-display').textContent = uploadPreset;
+}
+
+function loadGallery() {
+  try {
+    const raw = localStorage.getItem(GALLERY_STORAGE);
+    gallery = raw ? JSON.parse(raw) : [];
+  } catch(e) { gallery = []; }
+}
+
+function saveGallery() {
+  try { localStorage.setItem(GALLERY_STORAGE, JSON.stringify(gallery)); } catch(e) {}
+}
+
+// ── LOGIN ─────────────────────────────────
+function tryLogin() {
+  const pw = document.getElementById('ls-pass').value;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('login-screen').classList.add('hide');
+    document.getElementById('admin-app').classList.add('show');
+    init();
+  } else {
+    document.getElementById('ls-error').classList.add('show');
+    document.getElementById('ls-pass').value = '';
+    document.getElementById('ls-pass').focus();
+  }
+}
+document.getElementById('ls-btn').addEventListener('click', tryLogin);
+document.getElementById('ls-pass').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+document.getElementById('logout-btn').addEventListener('click', () => {
+  if(confirm('Logout dari admin?')) location.reload();
+});
+
+// ── SAVE PRESET ───────────────────────────
+document.getElementById('save-preset-btn').addEventListener('click', () => {
+  const val = document.getElementById('preset-input').value.trim();
+  if(!val) { toast('Masukkan nama preset dulu!', true); return; }
+  uploadPreset = val;
+  localStorage.setItem(PRESET_STORAGE, val);
+  document.getElementById('cs-preset-display').textContent = val;
+  document.getElementById('preset-warning').classList.remove('show');
+  checkSetupNotice();
+  toast('&#10003; Preset tersimpan: ' + val);
+});
+
+function checkSetupNotice() {
+  // Preset sudah ada (ml_default_gallery) — notice disembunyikan
+  document.getElementById('setup-notice').style.display = 'none';
+}
+
+// ── UPLOAD TO CLOUDINARY ──────────────────
+const fileInput   = document.getElementById('file-input');
+const uploadZone  = document.getElementById('upload-zone');
+
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+});
+
+function handleFiles(files) {
+  if(!uploadPreset) {
+    document.getElementById('preset-warning').classList.add('show');
+    toast('&#9888; Isi Upload Preset dulu di sidebar!', true);
+    return;
+  }
+  Array.from(files).forEach(f => {
+    if(f.type.startsWith('image/')) uploadToCloudinary(f);
+  });
+}
+
+async function uploadToCloudinary(file) {
+  // Create placeholder card with progress bar
+  const tempId = 'temp_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  const placeholder = createUploadingCard(tempId, file.name);
+  const grid = document.getElementById('admin-gallery');
+
+  // Remove empty state if present
+  const emptyState = grid.querySelector('.empty-state');
+  if(emptyState) emptyState.remove();
+
+  grid.insertBefore(placeholder, grid.firstChild);
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', uploadPreset);
+  formData.append('folder', GALLERY_FOLDER);
+
+  try {
+    const xhr = new XMLHttpRequest();
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+    // Progress
+    xhr.upload.addEventListener('progress', e => {
+      if(e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 100);
+        const bar = document.getElementById('bar_' + tempId);
+        const txt = document.getElementById('txt_' + tempId);
+        if(bar) bar.style.width = pct + '%';
+        if(txt) txt.textContent = pct + '%';
+      }
+    });
+
+    xhr.addEventListener('load', () => {
+      if(xhr.status === 200) {
+        const res = JSON.parse(xhr.responseText);
+        const artwork = {
+          id: res.public_id.replace('/', '_') + '_' + Date.now(),
+          title: formatTitle(file.name),
+          category: 'game',
+          tag: 'Game Background',
+          desc: '',
+          url: res.secure_url,
+          publicId: res.public_id,
+          width: res.width,
+          height: res.height,
+          date: new Date().toISOString().slice(0,10)
+        };
+        gallery.unshift(artwork);
+        saveGallery();
+        // Replace placeholder with real card
+        const ph = document.getElementById(tempId);
+        if(ph) ph.replaceWith(createArtworkCard(artwork));
+        updateStats();
+        toast('&#10003; "' + artwork.title + '" berhasil diupload ke Cloudinary!');
+      } else {
+        const err = JSON.parse(xhr.responseText);
+        document.getElementById(tempId)?.remove();
+        renderGallery();
+        toast('&#10005; Upload gagal: ' + (err.error?.message || 'Cek preset kamu'), true);
+      }
+    });
+
+    xhr.addEventListener('error', () => {
+      document.getElementById(tempId)?.remove();
+      renderGallery();
+      toast('&#10005; Koneksi gagal. Coba lagi.', true);
+    });
+
+    xhr.open('POST', url);
+    xhr.send(formData);
+
+  } catch(err) {
+    document.getElementById(tempId)?.remove();
+    renderGallery();
+    toast('&#10005; Error: ' + err.message, true);
+  }
+
+  fileInput.value = '';
+}
+
+function createUploadingCard(tempId, filename) {
+  const div = document.createElement('div');
+  div.className = 'ag-item';
+  div.id = tempId;
+  div.innerHTML = `
+    <div class="ag-uploading">
+      <div style="font-family:var(--font-m);font-size:0.6rem;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Uploading...</div>
+      <div style="font-family:var(--font-m);font-size:0.65rem;color:var(--lime);margin-bottom:0.8rem">${filename.length > 20 ? filename.slice(0,20)+'...' : filename}</div>
+      <div class="progress-bar"><div class="progress-fill" id="bar_${tempId}"></div></div>
+      <div class="progress-text" id="txt_${tempId}">0%</div>
+    </div>`;
+  return div;
+}
+
+function createArtworkCard(item) {
+  const div = document.createElement('div');
+  div.className = 'ag-item';
+  div.dataset.id = item.id;
+  div.innerHTML = `
+    <img class="ag-img" src="${item.url}" alt="${item.title}" loading="lazy">
+    <div class="ag-over">
+      <div class="ag-title">${item.title}</div>
+      <div class="ag-cat">${CAT_LABELS[item.category] || item.category}</div>
+      <div class="ag-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openEdit('${item.id}')">&#9998; Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('${item.id}')">&#10005;</button>
+      </div>
+    </div>`;
+  return div;
+}
+
+// ── RENDER GALLERY ────────────────────────
+function renderGallery() {
+  const grid = document.getElementById('admin-gallery');
+  if(gallery.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div class="es-icon">&#128444;</div><div class="es-title">Belum ada karya</div><div class="es-sub">Upload gambar pertama kamu di sidebar kiri</div></div>`;
+    return;
+  }
+  grid.innerHTML = '';
+  gallery.forEach(item => grid.appendChild(createArtworkCard(item)));
+}
+
+// ── STATS ─────────────────────────────────
+function updateStats() {
+  document.getElementById('s-total').textContent   = gallery.length;
+  document.getElementById('s-game').textContent    = gallery.filter(x=>x.category==='game').length;
+  document.getElementById('s-anim').textContent    = gallery.filter(x=>x.category==='animation').length;
+  document.getElementById('s-matte').textContent   = gallery.filter(x=>x.category==='matte').length;
+  document.getElementById('s-fantasy').textContent = gallery.filter(x=>x.category==='fantasy').length;
+  document.getElementById('s-env').textContent     = gallery.filter(x=>x.category==='environment').length;
+}
+
+// ── EDIT ──────────────────────────────────
+function openEdit(id) {
+  const item = gallery.find(x => x.id === id);
+  if(!item) return;
+  editingId = id;
+  document.getElementById('edit-modal-sub').textContent = item.title;
+  document.getElementById('modal-thumb').src = item.url;
+  document.getElementById('f-title').value = item.title;
+  document.getElementById('f-cat').value = item.category;
+  document.getElementById('f-desc').value = item.desc || '';
+  document.getElementById('edit-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeEdit() {
+  document.getElementById('edit-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingId = null;
+}
+document.getElementById('modal-cancel-btn').addEventListener('click', closeEdit);
+document.getElementById('edit-modal').addEventListener('click', e => { if(e.target===document.getElementById('edit-modal')) closeEdit(); });
+
+document.getElementById('modal-save-btn').addEventListener('click', () => {
+  const title = document.getElementById('f-title').value.trim();
+  if(!title) { toast('Judul wajib diisi!', true); return; }
+  const idx = gallery.findIndex(x => x.id === editingId);
+  if(idx !== -1) {
+    gallery[idx].title    = title;
+    gallery[idx].category = document.getElementById('f-cat').value;
+    gallery[idx].tag      = CAT_LABELS[gallery[idx].category];
+    gallery[idx].desc     = document.getElementById('f-desc').value.trim();
+    saveGallery();
+    renderGallery();
+    updateStats();
+    closeEdit();
+    toast('&#10003; Karya berhasil diupdate!');
+  }
+});
+
+// ── DELETE ────────────────────────────────
+function deleteItem(id) {
+  const item = gallery.find(x => x.id === id);
+  if(!item) return;
+  if(!confirm(`Hapus "${item.title}"?\n\nGambar akan dihapus dari daftar. File di Cloudinary tetap ada (bisa hapus manual di dashboard Cloudinary).`)) return;
+  gallery = gallery.filter(x => x.id !== id);
+  saveGallery();
+  renderGallery();
+  updateStats();
+  toast('Karya dihapus dari daftar');
+}
+
+// ── CLEAR ALL ─────────────────────────────
+document.getElementById('clear-all-btn').addEventListener('click', () => {
+  if(!confirm('Hapus SEMUA data karya dari daftar? File di Cloudinary tidak ikut terhapus.')) return;
+  gallery = [];
+  saveGallery();
+  renderGallery();
+  updateStats();
+  toast('Semua data dihapus dari daftar');
+});
+
+// ── DOWNLOAD gallery.json ─────────────────
+document.getElementById('dl-json').addEventListener('click', () => {
+  if (gallery.length === 0) {
+    toast('Belum ada karya untuk di-export!', true);
+    return;
+  }
+  // Export dengan format yang kompatibel untuk index.html
+  const exportData = gallery.map(item => ({
+    id:       item.id,
+    title:    item.title,
+    category: item.category,
+    tag:      item.tag,
+    desc:     item.desc || '',
+    url:      item.url,   // untuk index.html (Cloudinary URL)
+    file:     item.url,   // fallback kompatibilitas
+    date:     item.date
+  }));
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'gallery.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('&#8595; gallery.json didownload! Taruh di folder assets/ lalu upload ke Netlify.');
+});
+
+// ── HELPERS ───────────────────────────────
+function formatTitle(filename) {
+  return filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+// ── TOAST ─────────────────────────────────
+function toast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.className = 'show' + (isError ? ' error' : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className='', 4000);
+}
+
+// ── KEYBOARD ─────────────────────────────
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeEdit(); });
+</script>
+</body>
+</html>
