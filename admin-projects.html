@@ -140,6 +140,7 @@ textarea.fi{resize:vertical;min-height:80px}
 .cr-val{font-family:var(--font-m);font-size:0.6rem;color:var(--accent)}
 .cr-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 @media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{border-right:none;border-bottom:1px solid var(--border)}.form-row{grid-template-columns:1fr}}
 </style>
@@ -192,7 +193,17 @@ textarea.fi{resize:vertical;min-height:80px}
         </div>
       </div>
 
-      <!-- Stats -->
+      <!-- GitHub Token -->
+      <div>
+        <div class="sb-title">GitHub Token</div>
+        <div style="font-family:var(--font-m);font-size:0.58rem;color:var(--ink3);line-height:1.8;margin-bottom:0.6rem">Token disimpan di browser — aman.</div>
+        <div style="display:flex;gap:0.5rem">
+          <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxx"
+            style="flex:1;background:var(--bg3);border:1px solid var(--border);padding:0.6rem 0.8rem;color:var(--ink);font-family:var(--font-m);font-size:0.72rem;outline:none">
+          <button class="btn btn-ghost btn-sm" id="save-gh-token">Save</button>
+        </div>
+        <div id="gh-token-status" style="font-family:var(--font-m);font-size:0.58rem;margin-top:0.4rem;color:var(--ink3)"></div>
+      </div>
       <div>
         <div class="sb-title">Stats</div>
         <div class="stats-box">
@@ -215,16 +226,14 @@ textarea.fi{resize:vertical;min-height:80px}
       <div style="display:flex;flex-direction:column;gap:0.5rem">
         <!-- Sync reminder -->
         <div style="background:rgba(124,158,248,0.08);border:1px solid rgba(124,158,248,0.25);padding:1rem;margin-bottom:0.3rem">
-          <div style="font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">&#9432; Cara simpan permanen</div>
+          <div style="font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">&#9889; Auto-Sync Aktif</div>
           <div style="font-family:var(--font-m);font-size:0.58rem;color:var(--ink2);line-height:1.9">
-            1. Selesai edit proyek<br>
-            2. Klik <strong style="color:var(--accent)">Download projects.json</strong><br>
-            3. Taruh di folder <strong style="color:var(--accent)">assets/</strong><br>
-            4. Upload ulang ke Netlify
+            Klik <strong style="color:var(--accent)">Save & Deploy</strong> setelah selesai edit proyek. Website update otomatis dalam <strong style="color:var(--accent)">30-60 detik</strong>.
           </div>
         </div>
         <button class="btn btn-accent btn-block" id="new-project-btn">+ New Project</button>
-        <button class="btn btn-lime btn-block" id="dl-projects-btn">&#8595; Download projects.json</button>
+        <button class="btn btn-lime btn-block" id="sync-projects-btn">&#9889; Save & Deploy</button>
+        <button class="btn btn-ghost btn-block" id="dl-projects-btn">&#8595; Backup projects.json</button>
         <button class="btn btn-danger btn-block" id="clear-all-btn">&#10005; Clear All Projects</button>
       </div>
 
@@ -349,6 +358,7 @@ function init() {
   loadProjects();
   renderSidebar();
   updateStats();
+  initGHToken();
 }
 
 function loadPreset() {
@@ -642,7 +652,90 @@ function deleteProject() {
 }
 ['delete-project-btn','delete-project-btn2'].forEach(id => document.getElementById(id).addEventListener('click', deleteProject));
 
-// ── DOWNLOAD projects.json
+// ── GITHUB TOKEN
+function initGHToken() {
+  const saved = localStorage.getItem('np_gh_token') || '';
+  const input = document.getElementById('gh-token-input');
+  const status = document.getElementById('gh-token-status');
+  if (saved) { input.value = saved; status.textContent = '✓ Token tersimpan'; status.style.color = 'var(--accent)'; }
+  else { status.textContent = '⚠ Masukkan GitHub token'; status.style.color = '#f59e0b'; }
+}
+document.getElementById('save-gh-token').addEventListener('click', () => {
+  const val = document.getElementById('gh-token-input').value.trim();
+  if (!val.startsWith('ghp_')) { document.getElementById('gh-token-status').textContent = '✗ Token tidak valid'; document.getElementById('gh-token-status').style.color = 'var(--red)'; return; }
+  localStorage.setItem('np_gh_token', val);
+  document.getElementById('gh-token-status').textContent = '✓ Tersimpan!';
+  document.getElementById('gh-token-status').style.color = 'var(--accent)';
+  toast('&#10003; GitHub token tersimpan!');
+});
+
+// ── GITHUB AUTO-SYNC CONFIG
+const GITHUB_TOKEN    = localStorage.getItem('np_gh_token') || '';
+const GITHUB_USER     = 'nurpadly';
+const GITHUB_REPO     = 'nurpadly-portfolio';
+const GITHUB_FILE     = 'assets/projects.json';
+const GITHUB_API      = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+
+async function syncProjectsToGitHub() {
+  const btn = document.getElementById('sync-projects-btn');
+  const origText = btn.innerHTML;
+
+  if (projects.length === 0) {
+    toast('Belum ada proyek untuk di-sync!', true);
+    return;
+  }
+
+  btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid var(--bg);border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:6px"></span> Syncing...';
+  btn.disabled = true;
+
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(projects, null, 2))));
+
+    // Get current SHA
+    const getRes  = await fetch(GITHUB_API, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const getData = await getRes.json();
+    const sha     = getData.sha || '';
+
+    // Push to GitHub
+    const pushRes = await fetch(GITHUB_API, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Update projects.json — ${projects.length} projects — ${new Date().toLocaleString('id-ID')}`,
+        content: content,
+        sha: sha
+      })
+    });
+
+    if (pushRes.ok) {
+      btn.innerHTML = '&#10003; Synced! Netlify updating...';
+      btn.style.background = '#4ade80';
+      toast(`&#9889; projects.json berhasil di-sync! Website update dalam 30-60 detik.`);
+      setTimeout(() => {
+        btn.innerHTML = origText;
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 4000);
+    } else {
+      const err = await pushRes.json();
+      throw new Error(err.message || 'Push failed');
+    }
+  } catch(err) {
+    btn.innerHTML = origText;
+    btn.disabled = false;
+    toast('&#10005; Sync gagal: ' + err.message, true);
+  }
+}
+
+document.getElementById('sync-projects-btn').addEventListener('click', syncProjectsToGitHub);
+
+// ── DOWNLOAD projects.json (backup)
 document.getElementById('dl-projects-btn').addEventListener('click', () => {
   if (projects.length === 0) {
     toast('Belum ada proyek untuk di-export!', true);
