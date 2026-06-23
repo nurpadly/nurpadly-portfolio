@@ -78,6 +78,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight
 .cs-val{font-family:var(--font-m);font-size:0.62rem;color:var(--lime)}
 .cs-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── CONTENT ── */
 .content{padding:2rem;overflow-y:auto}
@@ -197,7 +198,17 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight
     <!-- SIDEBAR -->
     <div class="sidebar">
 
-      <!-- Cloudinary Status -->
+      <!-- GitHub Token -->
+      <div>
+        <div class="sb-title">GitHub Token</div>
+        <div style="font-family:var(--font-m);font-size:0.58rem;color:var(--ink3);line-height:1.8;margin-bottom:0.6rem">Token disimpan di browser kamu saja — aman, tidak dikirim ke mana pun selain GitHub.</div>
+        <div style="display:flex;gap:0.5rem">
+          <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxx"
+            style="flex:1;background:var(--bg3);border:1px solid var(--border);padding:0.6rem 0.8rem;color:var(--ink);font-family:var(--font-m);font-size:0.72rem;outline:none;transition:border-color 0.2s">
+          <button class="btn btn-ghost btn-sm" id="save-gh-token">Save</button>
+        </div>
+        <div id="gh-token-status" style="font-family:var(--font-m);font-size:0.58rem;margin-top:0.4rem;color:var(--ink3)"></div>
+      </div>
       <div>
         <div class="sb-title">Cloudinary Status</div>
         <div class="cloud-status">
@@ -261,16 +272,14 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight
       <div>
         <div class="sb-title">Actions</div>
         <div style="background:rgba(124,158,248,0.08);border:1px solid rgba(124,158,248,0.25);padding:1rem;margin-bottom:0.8rem">
-          <div style="font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);margin-bottom:0.5rem">&#9432; Cara simpan permanen</div>
+          <div style="font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);margin-bottom:0.5rem">&#9889; Auto-Sync Aktif</div>
           <div style="font-family:var(--font-m);font-size:0.58rem;color:var(--ink2);line-height:1.9">
-            1. Upload karya selesai<br>
-            2. Klik <strong style="color:var(--lime)">Download gallery.json</strong><br>
-            3. Taruh di folder <strong style="color:var(--lime)">assets/</strong><br>
-            4. Upload ulang ke Netlify
+            Klik <strong style="color:var(--lime)">Save & Deploy</strong> setelah upload karya baru. Website Netlify akan update otomatis dalam <strong style="color:var(--lime)">30-60 detik</strong>.
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:0.6rem">
-          <button class="btn btn-lime" id="dl-json" style="justify-content:center">&#8595; Download gallery.json</button>
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <button class="btn btn-lime" id="sync-btn" style="justify-content:center">&#9889; Save & Deploy</button>
+          <button class="btn btn-ghost" id="dl-json" style="justify-content:center">&#8595; Backup gallery.json</button>
           <button class="btn btn-danger" id="clear-all-btn" style="justify-content:center">&#10005; Hapus Semua Data</button>
         </div>
       </div>
@@ -378,6 +387,7 @@ function init() {
   renderGallery();
   updateStats();
   checkSetupNotice();
+  initGHToken();
 }
 
 function loadPreset() {
@@ -652,7 +662,114 @@ document.getElementById('clear-all-btn').addEventListener('click', () => {
   toast('Semua data dihapus dari daftar');
 });
 
-// ── DOWNLOAD gallery.json ─────────────────
+// ── GITHUB TOKEN SETUP
+function initGHToken() {
+  const saved = localStorage.getItem('np_gh_token') || '';
+  const input = document.getElementById('gh-token-input');
+  const status = document.getElementById('gh-token-status');
+  if (saved) {
+    input.value = saved;
+    status.textContent = '✓ Token tersimpan — siap sync';
+    status.style.color = 'var(--lime)';
+  } else {
+    status.textContent = '⚠ Masukkan GitHub token kamu';
+    status.style.color = '#f59e0b';
+  }
+}
+document.getElementById('save-gh-token').addEventListener('click', () => {
+  const val = document.getElementById('gh-token-input').value.trim();
+  if (!val.startsWith('ghp_')) {
+    document.getElementById('gh-token-status').textContent = '✗ Token tidak valid (harus diawali ghp_)';
+    document.getElementById('gh-token-status').style.color = 'var(--red)';
+    return;
+  }
+  localStorage.setItem('np_gh_token', val);
+  document.getElementById('gh-token-status').textContent = '✓ Token tersimpan!';
+  document.getElementById('gh-token-status').style.color = 'var(--lime)';
+  toast('&#10003; GitHub token tersimpan!');
+});
+
+// ── GITHUB AUTO-SYNC CONFIG
+const GITHUB_TOKEN = localStorage.getItem('np_gh_token') || '';
+const GITHUB_USER  = 'nurpadly';
+const GITHUB_REPO  = 'nurpadly-portfolio';
+const GITHUB_FILE  = 'assets/gallery.json';
+const GITHUB_API   = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+
+async function syncToGitHub() {
+  const btn = document.getElementById('sync-btn');
+  const origText = btn.innerHTML;
+
+  if (gallery.length === 0) {
+    toast('Belum ada karya untuk di-sync!', true);
+    return;
+  }
+
+  // Show loading
+  btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid var(--bg);border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:6px"></span> Syncing...';
+  btn.disabled = true;
+
+  try {
+    // Build export data
+    const exportData = gallery.map(item => ({
+      id:       item.id,
+      title:    item.title,
+      category: item.category,
+      tag:      item.tag,
+      desc:     item.desc || '',
+      url:      item.url,
+      file:     item.url,
+      date:     item.date
+    }));
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(exportData, null, 2))));
+
+    // Get current SHA
+    const getRes = await fetch(GITHUB_API, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const getData = await getRes.json();
+    const sha = getData.sha || '';
+
+    // Push to GitHub
+    const pushRes = await fetch(GITHUB_API, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Update gallery.json — ${gallery.length} artworks — ${new Date().toLocaleString('id-ID')}`,
+        content: content,
+        sha: sha
+      })
+    });
+
+    if (pushRes.ok) {
+      btn.innerHTML = '&#10003; Synced! Netlify updating...';
+      btn.style.background = '#4ade80';
+      toast(`&#9889; gallery.json berhasil di-sync ke GitHub! Website akan update dalam 30-60 detik.`);
+      setTimeout(() => {
+        btn.innerHTML = origText;
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 4000);
+    } else {
+      const err = await pushRes.json();
+      throw new Error(err.message || 'Push failed');
+    }
+
+  } catch(err) {
+    btn.innerHTML = origText;
+    btn.disabled = false;
+    toast('&#10005; Sync gagal: ' + err.message, true);
+  }
+}
+
+document.getElementById('sync-btn').addEventListener('click', syncToGitHub);
+
+// ── DOWNLOAD gallery.json (backup)
 document.getElementById('dl-json').addEventListener('click', () => {
   if (gallery.length === 0) {
     toast('Belum ada karya untuk di-export!', true);
