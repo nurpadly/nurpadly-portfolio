@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+
+  <!-- Background -->
+  <rect width="32" height="32" rx="7" fill="#0f1117"/>
+
+  <!-- Accent corner top-left -->
+  <rect x="3" y="3" width="3" height="14" rx="1.5" fill="#7c9ef8"/>
+
+  <!-- Letter N — stroke style -->
+  <line x1="7.5" y1="8" x2="7.5" y2="22" stroke="#eaecf0" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="7.5" y1="8" x2="13" y2="22" stroke="#eaecf0" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="13" y1="8" x2="13" y2="22" stroke="#eaecf0" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Letter P -->
+  <line x1="16.5" y1="8" x2="16.5" y2="22" stroke="#eaecf0" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- P curve top -->
+  <path d="M16.5 8 Q23 8 23 12.5 Q23 17 16.5 17" stroke="#eaecf0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Accent dot bottom-right -->
+  <circle cx="27.5" cy="27.5" r="2" fill="#7c9ef8"/>
+
+</svg>
