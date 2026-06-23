@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="shortcut icon" href="assets/favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Project Detail Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#13151e;--bg3:#1a1d28;--bg4:#21253a;
+  --ink:#eaecf0;--ink2:#8b90a0;--ink3:#4a4f64;
+  --accent:#7c9ef8;--accent2:#a0b4fa;--accent3:rgba(124,158,248,0.1);
+  --red:#ff5555;--red2:rgba(255,85,85,0.08);
+  --green:#4ade80;
+  --border:#252830;--border2:#2e3348;
+  --font-h:'Syne',sans-serif;--font-b:'Space Grotesk',sans-serif;--font-m:'Space Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);min-height:100vh}
+
+/* LOGIN */
+#login{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:2rem}
+#login.hide{display:none}
+.ls-box{background:var(--bg2);border:1px solid var(--border2);padding:3rem;width:100%;max-width:400px}
+.ls-logo{font-family:var(--font-h);font-size:1.4rem;font-weight:800;text-transform:uppercase;color:var(--ink);margin-bottom:0.3rem}
+.ls-logo span{color:var(--accent)}
+.ls-sub{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);margin-bottom:2rem}
+.ls-input{width:100%;background:var(--bg3);border:1px solid var(--border);padding:0.9rem 1rem;color:var(--ink);font-family:var(--font-m);font-size:0.95rem;outline:none;transition:border-color 0.2s;margin-bottom:0.8rem;letter-spacing:0.1em}
+.ls-input:focus{border-color:var(--accent)}
+.ls-error{font-family:var(--font-m);font-size:0.6rem;color:var(--red);margin-bottom:0.8rem;display:none}
+.ls-error.show{display:block}
+
+/* APP */
+#app{display:none;min-height:100vh}
+#app.show{display:block}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-logo{font-family:var(--font-h);font-size:0.85rem;font-weight:800;text-transform:uppercase;color:var(--ink)}
+.tb-logo span{color:var(--accent)}
+.tb-right{display:flex;gap:0.7rem;align-items:center}
+.tb-badge{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.7rem;background:var(--accent3);border:1px solid rgba(124,158,248,0.3);color:var(--accent)}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 52px)}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem;overflow-y:auto}
+.content{padding:2rem;overflow-y:auto}
+
+/* SIDEBAR */
+.sb-title{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.8rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+.stats-box{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+.stat-cell{background:var(--bg);padding:0.9rem 0.8rem}
+.stat-n{font-family:var(--font-h);font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1}
+.stat-l{font-family:var(--font-m);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-top:0.25rem}
+.project-list{display:flex;flex-direction:column;gap:3px}
+.pj-item{padding:0.8rem 1rem;background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:all 0.2s;border-left:2px solid transparent}
+.pj-item:hover{background:var(--bg4);border-left-color:var(--accent)}
+.pj-item.active{background:var(--bg4);border-left-color:var(--accent)}
+.pj-name{font-family:var(--font-h);font-size:0.82rem;font-weight:700;color:var(--ink);text-transform:uppercase;margin-bottom:0.2rem}
+.pj-meta{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.08em;color:var(--ink3);text-transform:uppercase}
+
+/* CONTENT */
+.content-title{font-family:var(--font-h);font-size:1.3rem;font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;color:var(--ink);margin-bottom:1.5rem}
+.content-title span{color:var(--accent)}
+
+/* FORM */
+.form-section{background:var(--bg2);border:1px solid var(--border);padding:1.5rem;margin-bottom:1rem}
+.fs-title{font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem;display:flex;align-items:center;gap:0.5rem}
+.fs-title::before{content:'';width:10px;height:1.5px;background:var(--accent)}
+.field{margin-bottom:1rem}
+.field:last-child{margin-bottom:0}
+.fl{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.4rem}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--border);padding:0.75rem 0.9rem;color:var(--ink);font-family:var(--font-b);font-size:0.85rem;outline:none;transition:border-color 0.2s;appearance:none}
+.fi:focus{border-color:var(--accent)}
+.fi::placeholder{color:var(--ink3)}
+textarea.fi{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.fhint{font-family:var(--font-m);font-size:0.58rem;color:var(--ink3);margin-top:0.3rem;line-height:1.5}
+
+/* COVER UPLOAD */
+.cover-upload{border:1.5px dashed var(--border2);padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.25s;position:relative;background:var(--bg)}
+.cover-upload:hover,.cover-upload.drag{border-color:var(--accent);background:var(--accent3)}
+.cover-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.cu-text{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.cu-text strong{color:var(--accent);display:block;margin-bottom:0.3rem;font-size:0.75rem}
+.cover-preview{width:100%;max-height:160px;object-fit:cover;display:block;margin-bottom:0.8rem;border:1px solid var(--border)}
+
+/* STEPS */
+.steps-container{display:flex;flex-direction:column;gap:8px}
+.step-item{background:var(--bg3);border:1px solid var(--border);overflow:hidden}
+.step-header{display:flex;align-items:center;gap:0.8rem;padding:0.8rem 1rem;cursor:pointer;user-select:none}
+.step-header:hover{background:var(--bg4)}
+.step-num-badge{width:24px;height:24px;background:var(--accent3);border:1px solid rgba(124,158,248,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:0.7rem;font-weight:800;color:var(--accent);flex-shrink:0}
+.step-name{font-family:var(--font-h);font-size:0.85rem;font-weight:700;text-transform:uppercase;color:var(--ink);flex:1}
+.step-img-count{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.step-toggle{font-size:0.75rem;color:var(--ink3);transition:transform 0.3s}
+.step-item.open .step-toggle{transform:rotate(180deg)}
+.step-body{display:none;padding:1rem;border-top:1px solid var(--border);background:var(--bg2)}
+.step-item.open .step-body{display:block}
+
+/* Step image upload */
+.step-img-upload{border:1px dashed var(--border2);padding:1rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:var(--bg);margin-bottom:0.8rem}
+.step-img-upload:hover{border-color:var(--accent);background:var(--accent3)}
+.step-img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.siu-text{font-family:var(--font-m);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.step-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:4px;margin-top:0.8rem}
+.st-item{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--bg4);border:1px solid var(--border)}
+.st-item img{width:100%;height:100%;object-fit:cover;display:block}
+.st-del{position:absolute;top:3px;right:3px;background:rgba(10,10,15,0.9);border:none;color:var(--red);width:18px;height:18px;font-size:0.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.upload-prog{height:2px;background:var(--border);overflow:hidden;margin-top:4px;display:none}
+.upload-prog-fill{height:100%;background:var(--accent);width:0;transition:width 0.3s}
+
+/* BTNS */
+.btn{font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.55rem 1.1rem;border:1px solid;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:0.4rem;background:transparent}
+.btn-accent{background:var(--accent);color:var(--bg);border-color:var(--accent);font-family:var(--font-h);font-weight:700;font-size:0.7rem}
+.btn-accent:hover{background:var(--accent2)}
+.btn-lime{background:#4ade80;color:var(--bg);border-color:#4ade80;font-family:var(--font-h);font-weight:700;font-size:0.7rem}
+.btn-lime:hover{background:#6ee7a0}
+.btn-ghost{color:var(--ink2);border-color:var(--border2)}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.btn-danger{color:var(--red);border-color:rgba(255,85,85,0.3)}
+.btn-danger:hover{background:var(--red2);border-color:var(--red)}
+.btn-success{color:var(--green);border-color:rgba(74,222,128,0.3)}
+.btn-success:hover{background:rgba(74,222,128,0.06)}
+.btn-sm{padding:0.3rem 0.7rem;font-size:0.57rem}
+.btn-block{width:100%;justify-content:center}
+
+/* TOAST */
+#toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg2);border:1px solid var(--accent);color:var(--accent);font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.9rem 1.5rem;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.3s;max-width:340px;line-height:1.6}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.err{border-color:var(--red);color:var(--red)}
+
+/* CLOUD STATUS */
+.cloud-row{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)}
+.cloud-row:last-child{border-bottom:none}
+.cr-label{font-family:var(--font-m);font-size:0.57rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.cr-val{font-family:var(--font-m);font-size:0.6rem;color:var(--accent)}
+.cr-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{border-right:none;border-bottom:1px solid var(--border)}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="ls-box">
+    <div class="ls-logo">NUR <span>PADLY</span></div>
+    <div class="ls-sub">Project Detail Admin</div>
+    <input type="password" class="ls-input" id="ls-pass" placeholder="Password" autocomplete="off">
+    <div class="ls-error" id="ls-err">&#10005; Password salah</div>
+    <button class="btn btn-accent" id="ls-btn" style="width:100%;justify-content:center;padding:0.9rem">Masuk &#8594;</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem">
+      <div class="tb-logo">NUR <span>PADLY</span></div>
+      <div class="tb-badge">Project Admin</div>
+    </div>
+    <div class="tb-right">
+      <a href="projects.html" target="_blank" class="btn btn-ghost btn-sm">&#8599; View Page</a>
+      <a href="admin.html" class="btn btn-ghost btn-sm">Gallery Admin</a>
+      <button class="btn btn-ghost btn-sm" id="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- Cloudinary Status -->
+      <div>
+        <div class="sb-title">Cloudinary</div>
+        <div style="background:var(--bg3);border:1px solid var(--border);padding:0.8rem">
+          <div class="cloud-row"><span class="cr-label">Status</span><span style="display:flex;align-items:center;gap:5px"><span class="cr-dot"></span><span class="cr-val">Connected</span></span></div>
+          <div class="cloud-row"><span class="cr-label">Cloud</span><span class="cr-val">dwahzqqst</span></div>
+          <div class="cloud-row"><span class="cr-label">Preset</span><span class="cr-val" id="preset-display">—</span></div>
+        </div>
+        <div style="margin-top:0.6rem">
+          <div class="fl" style="margin-bottom:0.3rem">Upload Preset</div>
+          <div style="display:flex;gap:0.5rem">
+            <input type="text" class="fi" id="preset-input" placeholder="ml_default_gallery" style="flex:1;padding:0.6rem 0.8rem">
+            <button class="btn btn-ghost btn-sm" id="save-preset">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div>
+        <div class="sb-title">Stats</div>
+        <div class="stats-box">
+          <div class="stat-cell"><div class="stat-n" id="s-proj">0</div><div class="stat-l">Projects</div></div>
+          <div class="stat-cell"><div class="stat-n" id="s-steps">0</div><div class="stat-l">Stages</div></div>
+          <div class="stat-cell"><div class="stat-n" id="s-images">0</div><div class="stat-l">Images</div></div>
+          <div class="stat-cell"><div class="stat-n" id="s-game">0</div><div class="stat-l">Game</div></div>
+        </div>
+      </div>
+
+      <!-- Project List -->
+      <div>
+        <div class="sb-title">Projects</div>
+        <div class="project-list" id="project-list">
+          <div style="font-family:var(--font-m);font-size:0.6rem;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0">No projects yet</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <!-- Sync reminder -->
+        <div style="background:rgba(124,158,248,0.08);border:1px solid rgba(124,158,248,0.25);padding:1rem;margin-bottom:0.3rem">
+          <div style="font-family:var(--font-m);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">&#9432; Cara simpan permanen</div>
+          <div style="font-family:var(--font-m);font-size:0.58rem;color:var(--ink2);line-height:1.9">
+            1. Selesai edit proyek<br>
+            2. Klik <strong style="color:var(--accent)">Download projects.json</strong><br>
+            3. Taruh di folder <strong style="color:var(--accent)">assets/</strong><br>
+            4. Upload ulang ke Netlify
+          </div>
+        </div>
+        <button class="btn btn-accent btn-block" id="new-project-btn">+ New Project</button>
+        <button class="btn btn-lime btn-block" id="dl-projects-btn">&#8595; Download projects.json</button>
+        <button class="btn btn-danger btn-block" id="clear-all-btn">&#10005; Clear All Projects</button>
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content" id="content-area">
+      <!-- Welcome state -->
+      <div id="welcome-state" style="text-align:center;padding:5rem 2rem">
+        <div style="font-size:3rem;opacity:0.1;margin-bottom:1rem">&#9998;</div>
+        <div style="font-family:var(--font-h);font-size:1.2rem;font-weight:800;text-transform:uppercase;color:var(--ink3);margin-bottom:0.5rem">Select or Create a Project</div>
+        <div style="font-family:var(--font-m);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:1.5rem">Click "+ New Project" to get started</div>
+        <button class="btn btn-accent" id="welcome-new-btn">+ Create First Project</button>
+      </div>
+
+      <!-- Edit form (hidden by default) -->
+      <div id="edit-form" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+          <div class="content-title" id="form-title">New <span>Project</span></div>
+          <div style="display:flex;gap:0.6rem">
+            <button class="btn btn-danger btn-sm" id="delete-project-btn" style="display:none">&#10005; Delete</button>
+            <button class="btn btn-ghost btn-sm" id="cancel-btn">Cancel</button>
+            <button class="btn btn-accent btn-sm" id="save-project-btn">&#10003; Save Project</button>
+          </div>
+        </div>
+
+        <!-- Basic Info -->
+        <div class="form-section">
+          <div class="fs-title">Basic Information</div>
+          <div class="form-row">
+            <div class="field"><label class="fl">Project Title *</label><input type="text" class="fi" id="f-title" placeholder="e.g. Fantasy RPG — Forest Biome"></div>
+            <div class="field"><label class="fl">Tagline</label><input type="text" class="fi" id="f-tagline" placeholder="e.g. Game background production for Unity 2D"></div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label class="fl">Category</label>
+              <select class="fi" id="f-cat">
+                <option value="game">Game</option>
+                <option value="animation">Animation</option>
+                <option value="personal">Personal</option>
+              </select>
+            </div>
+            <div class="field"><label class="fl">Year</label><input type="text" class="fi" id="f-year" placeholder="2025"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label class="fl">Client / Studio</label><input type="text" class="fi" id="f-client" placeholder="e.g. Indie Studio / Personal"></div>
+            <div class="field"><label class="fl">Engine / Platform</label><input type="text" class="fi" id="f-platform" placeholder="e.g. Unity 2D, After Effects"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label class="fl">Total Assets</label><input type="text" class="fi" id="f-assets" placeholder="e.g. 12 backgrounds"></div>
+            <div class="field"><label class="fl">Tools (pisahkan koma)</label><input type="text" class="fi" id="f-tools" placeholder="e.g. Photoshop, Unity, After Effects"></div>
+          </div>
+          <div class="field"><label class="fl">Tags (pisahkan koma)</label><input type="text" class="fi" id="f-tags" placeholder="e.g. fantasy, parallax, layered PSD, game ready"></div>
+          <div class="field"><label class="fl">Project Description *</label><textarea class="fi" id="f-desc" placeholder="Ceritakan proyek ini — apa yang dikerjakan, tantangan, dan hasil akhirnya..."></textarea></div>
+        </div>
+
+        <!-- Cover Image -->
+        <div class="form-section">
+          <div class="fs-title">Cover Image</div>
+          <img id="cover-preview" class="cover-preview" src="" alt="" style="display:none">
+          <div class="cover-upload" id="cover-zone">
+            <input type="file" id="cover-input" accept="image/*">
+            <div class="cu-text"><strong>&#8679; Upload Cover Image</strong>Gambar utama yang muncul saat card di-expand<br><span style="color:var(--ink3)">Upload ke Cloudinary — permanen</span></div>
+          </div>
+          <div class="upload-prog" id="cover-prog"><div class="upload-prog-fill" id="cover-prog-fill"></div></div>
+        </div>
+
+        <!-- Process Steps -->
+        <div class="form-section">
+          <div class="fs-title">Process Breakdown</div>
+          <div style="font-family:var(--font-m);font-size:0.6rem;color:var(--ink3);line-height:1.8;margin-bottom:1rem">Tambah tahapan proses kamu — dari sketsa, props design, hingga background final. Setiap tahap bisa punya banyak foto.</div>
+          <div class="steps-container" id="steps-container"></div>
+          <button class="btn btn-ghost btn-block" id="add-step-btn" style="margin-top:0.8rem">+ Add Process Stage</button>
+        </div>
+
+        <!-- Save -->
+        <div style="display:flex;gap:0.8rem;justify-content:flex-end;padding-top:1rem">
+          <button class="btn btn-danger" id="delete-project-btn2" style="display:none">&#10005; Delete Project</button>
+          <button class="btn btn-ghost" id="cancel-btn2">Cancel</button>
+          <button class="btn btn-accent" id="save-project-btn2">&#10003; Save Project</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── CONFIG
+const ADMIN_PASSWORD  = 'nurpadly2024';
+const CLOUD_NAME      = 'dwahzqqst';
+const GALLERY_FOLDER  = 'nurpadly-gallery';
+const PRESET_KEY      = 'np_upload_preset';
+const PROJECTS_KEY    = 'np_projects_v1';
+
+let projects     = [];
+let editingId    = null;
+let uploadPreset = '';
+let steps        = [];   // local steps state while editing
+
+// ── LOGIN
+function tryLogin() {
+  const pw = document.getElementById('ls-pass').value;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('login').classList.add('hide');
+    document.getElementById('app').classList.add('show');
+    init();
+  } else {
+    document.getElementById('ls-err').classList.add('show');
+    document.getElementById('ls-pass').value = '';
+    document.getElementById('ls-pass').focus();
+  }
+}
+document.getElementById('ls-btn').addEventListener('click', tryLogin);
+document.getElementById('ls-pass').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+document.getElementById('logout-btn').addEventListener('click', () => { if(confirm('Logout?')) location.reload(); });
+
+// ── INIT
+function init() {
+  loadPreset();
+  loadProjects();
+  renderSidebar();
+  updateStats();
+}
+
+function loadPreset() {
+  uploadPreset = localStorage.getItem(PRESET_KEY) || 'ml_default_gallery';
+  document.getElementById('preset-input').value = uploadPreset;
+  document.getElementById('preset-display').textContent = uploadPreset;
+}
+document.getElementById('save-preset').addEventListener('click', () => {
+  const v = document.getElementById('preset-input').value.trim();
+  if (!v) return;
+  uploadPreset = v;
+  localStorage.setItem(PRESET_KEY, v);
+  document.getElementById('preset-display').textContent = v;
+  toast('Preset saved: ' + v);
+});
+
+function loadProjects() {
+  try { projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]'); } catch(e) { projects = []; }
+}
+function saveProjects() {
+  localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+}
+
+// ── SIDEBAR
+function renderSidebar() {
+  const list = document.getElementById('project-list');
+  if (projects.length === 0) {
+    list.innerHTML = '<div style="font-family:var(--font-m);font-size:0.6rem;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0">No projects yet</div>';
+    return;
+  }
+  list.innerHTML = projects.map(p => `
+    <div class="pj-item ${editingId===p.id?'active':''}" onclick="editProject('${p.id}')">
+      <div class="pj-name">${p.title || 'Untitled'}</div>
+      <div class="pj-meta">${p.category||'game'} &nbsp;·&nbsp; ${p.year||''} &nbsp;·&nbsp; ${(p.steps||[]).length} stages</div>
+    </div>`).join('');
+}
+
+// ── STATS
+function updateStats() {
+  document.getElementById('s-proj').textContent   = projects.length;
+  document.getElementById('s-steps').textContent  = projects.reduce((a,p) => a+(p.steps||[]).length, 0);
+  document.getElementById('s-images').textContent = projects.reduce((a,p) => a+(p.steps||[]).reduce((b,s)=>b+(s.images||[]).length,0), 0);
+  document.getElementById('s-game').textContent   = projects.filter(p=>p.category==='game').length;
+}
+
+// ── NEW PROJECT
+function newProject() {
+  editingId = null;
+  steps = [
+    { id: uid(), title: 'Sketch & Composition', description: '', images: [] },
+    { id: uid(), title: 'Props Design', description: '', images: [] },
+    { id: uid(), title: '2D Background Final', description: '', images: [] },
+  ];
+  clearForm();
+  showForm('New Project');
+}
+document.getElementById('new-project-btn').addEventListener('click', newProject);
+document.getElementById('welcome-new-btn').addEventListener('click', newProject);
+
+// ── EDIT PROJECT
+function editProject(id) {
+  const proj = projects.find(p => p.id === id);
+  if (!proj) return;
+  editingId = id;
+  steps = JSON.parse(JSON.stringify(proj.steps || []));
+  fillForm(proj);
+  showForm('Edit Project');
+  renderSidebar();
+}
+
+// ── SHOW FORM
+function showForm(titleText) {
+  document.getElementById('welcome-state').style.display = 'none';
+  document.getElementById('edit-form').style.display = 'block';
+  document.getElementById('form-title').innerHTML = titleText.split(' ')[0] + ' <span>' + titleText.split(' ').slice(1).join(' ') + '</span>';
+  const showDel = !!editingId;
+  document.getElementById('delete-project-btn').style.display  = showDel ? 'flex' : 'none';
+  document.getElementById('delete-project-btn2').style.display = showDel ? 'flex' : 'none';
+  renderSteps();
+  document.getElementById('content-area').scrollTop = 0;
+}
+
+function hideForm() {
+  document.getElementById('edit-form').style.display = 'none';
+  document.getElementById('welcome-state').style.display = 'block';
+  editingId = null;
+  steps = [];
+  renderSidebar();
+}
+
+['cancel-btn','cancel-btn2'].forEach(id => document.getElementById(id).addEventListener('click', hideForm));
+
+// ── FORM FILL / CLEAR
+function clearForm() {
+  ['f-title','f-tagline','f-year','f-client','f-platform','f-assets','f-tools','f-tags','f-desc'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  document.getElementById('f-year').value = new Date().getFullYear();
+  document.getElementById('f-cat').value = 'game';
+  const cp = document.getElementById('cover-preview');
+  cp.src = ''; cp.style.display = 'none';
+}
+function fillForm(proj) {
+  document.getElementById('f-title').value    = proj.title    || '';
+  document.getElementById('f-tagline').value  = proj.tagline  || '';
+  document.getElementById('f-year').value     = proj.year     || '';
+  document.getElementById('f-cat').value      = proj.category || 'game';
+  document.getElementById('f-client').value   = proj.client   || '';
+  document.getElementById('f-platform').value = proj.platform || '';
+  document.getElementById('f-assets').value   = proj.assetCount || '';
+  document.getElementById('f-tools').value    = (proj.tools||[]).join(', ');
+  document.getElementById('f-tags').value     = (proj.tags||[]).join(', ');
+  document.getElementById('f-desc').value     = proj.description || '';
+  const cp = document.getElementById('cover-preview');
+  if (proj.coverUrl) { cp.src = proj.coverUrl; cp.style.display = 'block'; }
+  else { cp.src = ''; cp.style.display = 'none'; }
+}
+
+// ── RENDER STEPS
+function renderSteps() {
+  const container = document.getElementById('steps-container');
+  container.innerHTML = '';
+  steps.forEach((step, i) => {
+    const div = document.createElement('div');
+    div.className = 'step-item open';
+    div.id = 'step-item-' + step.id;
+    div.innerHTML = `
+      <div class="step-header" onclick="toggleStepItem('${step.id}')">
+        <div class="step-num-badge">${String(i+1).padStart(2,'0')}</div>
+        <input type="text" value="${step.title}" placeholder="Stage title..." oninput="updateStepTitle('${step.id}',this.value)"
+          style="flex:1;background:transparent;border:none;color:var(--ink);font-family:var(--font-h);font-size:0.85rem;font-weight:700;text-transform:uppercase;outline:none;cursor:text;letter-spacing:0.02em" onclick="event.stopPropagation()">
+        <span class="step-img-count">${(step.images||[]).length} img</span>
+        <button onclick="event.stopPropagation();removeStep('${step.id}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:0.75rem;padding:2px 5px;opacity:0.6">&#10005;</button>
+        <span class="step-toggle">&#9660;</span>
+      </div>
+      <div class="step-body">
+        <div class="field">
+          <label class="fl">Description</label>
+          <textarea class="fi" placeholder="Jelaskan proses pada tahap ini..." oninput="updateStepDesc('${step.id}',this.value)">${step.description||''}</textarea>
+        </div>
+        <div class="fl" style="margin-bottom:0.4rem">Images</div>
+        <div class="step-img-upload" id="siu-${step.id}">
+          <input type="file" accept="image/*" multiple onchange="uploadStepImages('${step.id}',this.files)">
+          <div class="siu-text">&#8679; Upload gambar — langsung ke Cloudinary</div>
+        </div>
+        <div class="upload-prog" id="prog-${step.id}"><div class="upload-prog-fill" id="progfill-${step.id}"></div></div>
+        <div class="step-thumbs" id="thumbs-${step.id}">
+          ${(step.images||[]).map((img,ii) => `
+            <div class="st-item" id="stimg-${img.tempId||ii}">
+              <img src="${img.url}" alt="">
+              <button class="st-del" onclick="removeStepImage('${step.id}','${img.tempId||ii}')">&#10005;</button>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleStepItem(id) {
+  const el = document.getElementById('step-item-' + id);
+  if (el) el.classList.toggle('open');
+}
+function updateStepTitle(id, val) { const s = steps.find(x=>x.id===id); if(s) s.title = val; }
+function updateStepDesc(id, val)  { const s = steps.find(x=>x.id===id); if(s) s.description = val; }
+function removeStep(id) {
+  if (!confirm('Remove this stage?')) return;
+  steps = steps.filter(s => s.id !== id);
+  renderSteps();
+}
+
+document.getElementById('add-step-btn').addEventListener('click', () => {
+  steps.push({ id: uid(), title: 'New Stage', description: '', images: [] });
+  renderSteps();
+  toast('Stage added');
+});
+
+// ── COVER UPLOAD
+const coverZone  = document.getElementById('cover-zone');
+const coverInput = document.getElementById('cover-input');
+coverInput.addEventListener('change', e => { if(e.target.files.length) uploadCover(e.target.files[0]); });
+coverZone.addEventListener('dragover', e=>{e.preventDefault();coverZone.classList.add('drag')});
+coverZone.addEventListener('dragleave', ()=>coverZone.classList.remove('drag'));
+coverZone.addEventListener('drop', e=>{e.preventDefault();coverZone.classList.remove('drag');if(e.dataTransfer.files.length)uploadCover(e.dataTransfer.files[0])});
+
+function uploadCover(file) {
+  if (!checkPreset()) return;
+  const prog = document.getElementById('cover-prog');
+  const fill = document.getElementById('cover-prog-fill');
+  prog.style.display = 'block'; fill.style.width = '0';
+  uploadToCloudinary(file,
+    pct => fill.style.width = pct + '%',
+    url => {
+      prog.style.display = 'none';
+      const cp = document.getElementById('cover-preview');
+      cp.src = url; cp.style.display = 'block';
+      toast('&#10003; Cover uploaded!');
+    },
+    err => { prog.style.display = 'none'; toast('Upload failed: ' + err, true); }
+  );
+}
+
+// ── STEP IMAGE UPLOAD
+function uploadStepImages(stepId, files) {
+  if (!checkPreset()) return;
+  const step = steps.find(s => s.id === stepId);
+  if (!step) return;
+  const prog = document.getElementById('prog-' + stepId);
+  const fill = document.getElementById('progfill-' + stepId);
+
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    prog.style.display = 'block'; fill.style.width = '0';
+    const tempId = uid();
+    uploadToCloudinary(file,
+      pct => fill.style.width = pct + '%',
+      url => {
+        prog.style.display = 'none';
+        const img = { tempId, url, caption: file.name.replace(/\.[^.]+$/,'') };
+        step.images = step.images || [];
+        step.images.push(img);
+        // Add thumb
+        const thumbs = document.getElementById('thumbs-' + stepId);
+        const div = document.createElement('div');
+        div.className = 'st-item'; div.id = 'stimg-' + tempId;
+        div.innerHTML = `<img src="${url}" alt=""><button class="st-del" onclick="removeStepImage('${stepId}','${tempId}')">&#10005;</button>`;
+        thumbs.appendChild(div);
+        // Update count
+        const countEl = document.querySelector(`#step-item-${stepId} .step-img-count`);
+        if (countEl) countEl.textContent = step.images.length + ' img';
+        toast('&#10003; Image uploaded!');
+      },
+      err => { prog.style.display = 'none'; toast('Upload failed: ' + err, true); }
+    );
+  });
+}
+
+function removeStepImage(stepId, tempId) {
+  const step = steps.find(s => s.id === stepId);
+  if (!step) return;
+  step.images = (step.images || []).filter(i => i.tempId !== tempId);
+  const el = document.getElementById('stimg-' + tempId);
+  if (el) el.remove();
+  const countEl = document.querySelector(`#step-item-${stepId} .step-img-count`);
+  if (countEl) countEl.textContent = step.images.length + ' img';
+}
+
+// ── SAVE PROJECT
+function collectAndSave() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { toast('Project title is required!', true); return; }
+  const proj = {
+    id: editingId || uid(),
+    title,
+    tagline:     document.getElementById('f-tagline').value.trim(),
+    category:    document.getElementById('f-cat').value,
+    year:        document.getElementById('f-year').value.trim(),
+    client:      document.getElementById('f-client').value.trim(),
+    platform:    document.getElementById('f-platform').value.trim(),
+    assetCount:  document.getElementById('f-assets').value.trim(),
+    tools:       document.getElementById('f-tools').value.split(',').map(s=>s.trim()).filter(Boolean),
+    tags:        document.getElementById('f-tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    description: document.getElementById('f-desc').value.trim(),
+    coverUrl:    document.getElementById('cover-preview').src || '',
+    steps:       steps,
+  };
+
+  if (editingId) {
+    const idx = projects.findIndex(p => p.id === editingId);
+    if (idx !== -1) projects[idx] = proj;
+  } else {
+    projects.unshift(proj);
+  }
+  saveProjects();
+  updateStats();
+  renderSidebar();
+  hideForm();
+  toast('&#10003; Project "' + title + '" saved!');
+}
+
+['save-project-btn','save-project-btn2'].forEach(id => document.getElementById(id).addEventListener('click', collectAndSave));
+
+// ── DELETE PROJECT
+function deleteProject() {
+  if (!editingId) return;
+  const proj = projects.find(p => p.id === editingId);
+  if (!confirm('Delete "' + (proj?.title||'this project') + '"?')) return;
+  projects = projects.filter(p => p.id !== editingId);
+  saveProjects(); updateStats(); renderSidebar(); hideForm();
+  toast('Project deleted');
+}
+['delete-project-btn','delete-project-btn2'].forEach(id => document.getElementById(id).addEventListener('click', deleteProject));
+
+// ── DOWNLOAD projects.json
+document.getElementById('dl-projects-btn').addEventListener('click', () => {
+  if (projects.length === 0) {
+    toast('Belum ada proyek untuk di-export!', true);
+    return;
+  }
+  const blob = new Blob([JSON.stringify(projects, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'projects.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('&#8595; projects.json didownload! Taruh di folder assets/ lalu upload ke Netlify.');
+});
+
+// ── CLEAR ALL
+document.getElementById('clear-all-btn').addEventListener('click', () => {
+  if (!confirm('Delete ALL projects? Cannot be undone.')) return;
+  projects = [];
+  saveProjects(); updateStats(); renderSidebar(); hideForm();
+  toast('All projects cleared');
+});
+
+// ── CLOUDINARY UPLOAD
+function checkPreset() {
+  if (!uploadPreset) { toast('Set Upload Preset first!', true); return false; }
+  return true;
+}
+
+function uploadToCloudinary(file, onProgress, onSuccess, onError) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', uploadPreset);
+  fd.append('folder', GALLERY_FOLDER);
+  const xhr = new XMLHttpRequest();
+  xhr.upload.addEventListener('progress', e => { if(e.lengthComputable) onProgress(Math.round(e.loaded/e.total*100)); });
+  xhr.addEventListener('load', () => {
+    if (xhr.status === 200) {
+      const res = JSON.parse(xhr.responseText);
+      onSuccess(res.secure_url);
+    } else {
+      const err = JSON.parse(xhr.responseText);
+      onError(err.error?.message || 'Upload failed');
+    }
+  });
+  xhr.addEventListener('error', () => onError('Network error'));
+  xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+  xhr.send(fd);
+}
+
+// ── HELPERS
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+function toast(msg, isErr=false) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.className = 'show' + (isErr?' err':'');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className='', 4000);
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') hideForm(); });
+</script>
+</body>
+</html>
