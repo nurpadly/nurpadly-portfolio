@@ -1,1 +1,40 @@
-[]
+[
+  {
+    "id": "mqrc19fbzraq1k9p30d",
+    "title": "GUNDAM",
+    "tagline": "BG",
+    "category": "game",
+    "year": "2026",
+    "client": "MAPPA",
+    "platform": "2D",
+    "assetCount": "10",
+    "tools": [
+      "ps"
+    ],
+    "tags": [
+      "5"
+    ],
+    "description": "tes deploy",
+    "coverUrl": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782260748/nurpadly-gallery/wb3fvcchozihm70zrfc0.png",
+    "steps": [
+      {
+        "id": "mqrc0dgbkus0fowd1tp",
+        "title": "Sketch & Composition",
+        "description": "",
+        "images": []
+      },
+      {
+        "id": "mqrc0dgbfihza4pw43",
+        "title": "Props Design",
+        "description": "",
+        "images": []
+      },
+      {
+        "id": "mqrc0dgcq5q2rq84hx",
+        "title": "2D Background Final",
+        "description": "",
+        "images": []
+      }
+    ]
+  }
+]
