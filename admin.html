@@ -155,10 +155,32 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight
 .pw-text{font-family:var(--font-m);font-size:0.62rem;color:var(--red);line-height:1.8;letter-spacing:0.05em}
 .pw-text a{color:var(--red);text-decoration:underline}
 
-@media(max-width:768px){
+/* Prevent horizontal scroll */
+html,body{max-width:100%;overflow-x:hidden}
+
+@media(max-width:900px){
   .admin-main{grid-template-columns:1fr}
-  .sidebar{border-right:none;border-bottom:1px solid var(--border);max-height:none}
+  .sidebar{border-right:none;border-bottom:1px solid var(--border);max-height:none;padding:1.2rem}
   .admin-gallery{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .topbar{padding:0.8rem 1.2rem}
+  .tb-right{gap:0.5rem}
+}
+
+@media(max-width:600px){
+  .topbar{padding:0.7rem 1rem;flex-wrap:wrap;gap:0.5rem}
+  .tb-logo{font-size:0.8rem}
+  .tb-badge{display:none}
+  .tb-right{gap:0.4rem}
+  .tb-link{font-size:0.52rem;padding:0.3rem 0.5rem}
+  .sidebar{padding:1rem}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-n{font-size:1.6rem}
+  .admin-gallery{grid-template-columns:repeat(2,1fr);gap:1px}
+  .ls-box{padding:2rem 1.2rem}
+  .ls-logo{font-size:1.2rem}
+  .modal-box{padding:1.5rem 1.2rem;max-height:95vh}
+  .modal-actions{flex-direction:column}
+  .sn-input-row{flex-direction:column}
 }
 </style>
 </head>
