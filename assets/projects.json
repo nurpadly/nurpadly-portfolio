@@ -1,51 +1,57 @@
 [
   {
-    "id": "mqrc19fbzraq1k9p30d",
-    "title": "GUNDAM",
-    "tagline": "BG",
+    "id": "mqsqbzb2qmjeiu9w9r",
+    "title": "BLACK OUT",
+    "tagline": "BG KEY",
     "category": "game",
     "year": "2026",
-    "client": "MAPPA",
+    "client": "JC STAFF",
     "platform": "2D",
-    "assetCount": "10",
+    "assetCount": "15",
     "tools": [
-      "ps"
+      "wacom"
     ],
     "tags": [
-      "5"
+      "3"
     ],
-    "description": "tes deploy",
-    "coverUrl": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782260748/nurpadly-gallery/wb3fvcchozihm70zrfc0.png",
+    "description": "WAWW",
+    "coverUrl": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345145/nurpadly-gallery/yjmgljto118gxapehkyq.png",
     "steps": [
       {
-        "id": "mqrc0dgbkus0fowd1tp",
+        "id": "mqsq8iz1v8lfpqsr99g",
         "title": "Sketch & Composition",
-        "description": "prop1",
+        "description": "tahap 01",
         "images": [
           {
-            "tempId": "mqspkzt52wcoj74u6nj",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782343980/nurpadly-gallery/thvyzdv4f8gtxxkdxgl4.png",
-            "caption": "Gemini_Generated_Image_7lfukl7lfukl7lfu"
-          }
-        ]
-      },
-      {
-        "id": "mqrc0dgbfihza4pw43",
-        "title": "Props Design",
-        "description": "prop2",
-        "images": [
-          {
-            "tempId": "mqsplmheeyodzbsfhwg",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782344010/nurpadly-gallery/km4bbgkioamrsffxsf0g.png",
+            "tempId": "mqsqaoslvsiufm1ljs9",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345176/nurpadly-gallery/wdrbkzjcjqfzba4nsufm.png",
             "caption": "Gemini_Generated_Image_2hu4ec2hu4ec2hu4"
           }
         ]
       },
       {
-        "id": "mqrc0dgcq5q2rq84hx",
+        "id": "mqsq8iz1eo28owpoqq8",
+        "title": "Props Design",
+        "description": "tahap 02",
+        "images": [
+          {
+            "tempId": "mqsqb63o4wpiu5ioz8b",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345199/nurpadly-gallery/r82z9ty8nuhmgothmmlk.png",
+            "caption": "Gemini_Generated_Image_4nwm5e4nwm5e4nwm"
+          }
+        ]
+      },
+      {
+        "id": "mqsq8iz1jo246vqnwh",
         "title": "2D Background Final",
-        "description": "",
-        "images": []
+        "description": "tahap 3",
+        "images": [
+          {
+            "tempId": "mqsqbps0vl67rg1hah",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345226/nurpadly-gallery/jcyjy5wyqnddrkoaligo.png",
+            "caption": "Gemini_Generated_Image_4vznt54vznt54vzn"
+          }
+        ]
       }
     ]
   }
