@@ -20,14 +20,26 @@
       {
         "id": "mqrc0dgbkus0fowd1tp",
         "title": "Sketch & Composition",
-        "description": "",
-        "images": []
+        "description": "prop1",
+        "images": [
+          {
+            "tempId": "mqspkzt52wcoj74u6nj",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782343980/nurpadly-gallery/thvyzdv4f8gtxxkdxgl4.png",
+            "caption": "Gemini_Generated_Image_7lfukl7lfukl7lfu"
+          }
+        ]
       },
       {
         "id": "mqrc0dgbfihza4pw43",
         "title": "Props Design",
-        "description": "",
-        "images": []
+        "description": "prop2",
+        "images": [
+          {
+            "tempId": "mqsplmheeyodzbsfhwg",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782344010/nurpadly-gallery/km4bbgkioamrsffxsf0g.png",
+            "caption": "Gemini_Generated_Image_2hu4ec2hu4ec2hu4"
+          }
+        ]
       },
       {
         "id": "mqrc0dgcq5q2rq84hx",
