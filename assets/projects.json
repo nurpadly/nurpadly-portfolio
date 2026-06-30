@@ -1,57 +1,46 @@
 [
   {
-    "id": "mqsqbzb2qmjeiu9w9r",
-    "title": "BLACK OUT",
-    "tagline": "BG KEY",
+    "id": "mr0qm91jly36d42jyk8",
+    "title": "BLUE ARCHIVE",
+    "tagline": "Game Background Productions for Game 2.5D",
     "category": "game",
     "year": "2026",
-    "client": "JC STAFF",
-    "platform": "2D",
-    "assetCount": "15",
+    "client": "NEXON GAMES",
+    "platform": "Game 2.5D",
+    "assetCount": "1",
     "tools": [
-      "wacom"
+      "Photoshop",
+      "Wacom Intuos Pro"
     ],
     "tags": [
-      "3"
+      "Anime Fantasy RPG"
     ],
-    "description": "WAWW",
-    "coverUrl": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345145/nurpadly-gallery/yjmgljto118gxapehkyq.png",
+    "description": "Project Description: 2D Background Art for Blue Archive\n\nCollaborating with Frepreaks Indonesia, I had the privilege of working as a 2D Background Artist for Blue Archive, a major title developed by Nexon Games. My role involved crafting several immersive 2D environment backgrounds for the game.\n\nI was responsible for the entire background production pipeline, which included establishing precise perspective layouts and vanishing points, designing environmental assets, and executing the final rendering and lighting. The artwork displayed here is one of the official 2D backgrounds I delivered for the project.",
+    "coverUrl": "https://nurpadly-portfolio.netlify.app/admin-projects",
     "steps": [
       {
-        "id": "mqsq8iz1v8lfpqsr99g",
+        "id": "mr0ptqy3nvvfiyybml9",
         "title": "Sketch & Composition",
-        "description": "tahap 01",
+        "description": "Sketch Proses",
         "images": [
           {
-            "tempId": "mqsqaoslvsiufm1ljs9",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345176/nurpadly-gallery/wdrbkzjcjqfzba4nsufm.png",
-            "caption": "Gemini_Generated_Image_2hu4ec2hu4ec2hu4"
+            "tempId": "mr0qlxyv5nu5qmq0szk",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782829433/nurpadly-gallery/huifcv9cfhjmmqm7klqr.png",
+            "caption": "01"
           }
         ]
       },
       {
-        "id": "mqsq8iz1eo28owpoqq8",
+        "id": "mr0ptqy30xdvvjk5oclb",
         "title": "Props Design",
-        "description": "tahap 02",
-        "images": [
-          {
-            "tempId": "mqsqb63o4wpiu5ioz8b",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345199/nurpadly-gallery/r82z9ty8nuhmgothmmlk.png",
-            "caption": "Gemini_Generated_Image_4nwm5e4nwm5e4nwm"
-          }
-        ]
+        "description": "",
+        "images": []
       },
       {
-        "id": "mqsq8iz1jo246vqnwh",
+        "id": "mr0ptqy30e3k36itzis",
         "title": "2D Background Final",
-        "description": "tahap 3",
-        "images": [
-          {
-            "tempId": "mqsqbps0vl67rg1hah",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782345226/nurpadly-gallery/jcyjy5wyqnddrkoaligo.png",
-            "caption": "Gemini_Generated_Image_4vznt54vznt54vzn"
-          }
-        ]
+        "description": "",
+        "images": []
       }
     ]
   }
