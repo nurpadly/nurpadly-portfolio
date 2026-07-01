@@ -16,7 +16,7 @@
       "Anime Fantasy RPG"
     ],
     "description": "Project Description: 2D Background Art for Blue Archive Collaborating with Frepreaks Indonesia, I had the privilege of working as a 2D Background Artist for Blue Archive, a major title developed by Nexon Games. My role involved crafting several immersive 2D environment backgrounds for the game. I was responsible for the entire background production pipeline, which included establishing precise perspective layouts and vanishing points, designing environmental assets, and executing the final rendering and lighting. The artwork displayed here is one of the official 2D backgrounds I delivered for the project.",
-    "coverUrl": "https://nurpadly-portfolio.netlify.app/admin-projects",
+    "coverUrl": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782882305/nurpadly-gallery/pgxvvxlbq3dv6qricv53.jpg",
     "steps": [
       {
         "id": "mr1kb52i4fq3bqd8qt3",
@@ -32,6 +32,11 @@
             "tempId": "mr1ke654izs6xm6r3p",
             "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782879455/nurpadly-gallery/g4w44ywhoezcyedg5saf.jpg",
             "caption": "02"
+          },
+          {
+            "tempId": "mr1lvegaegb81kk9516",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881938/nurpadly-gallery/qtah3oocf7ffzsughsoa.jpg",
+            "caption": "03"
           }
         ]
       },
@@ -68,13 +73,13 @@
         "description": "Final Render & Polish This image represents the culmination of the entire background production pipeline. In this final stage, the foundational layout, tailored lighting scenario (BG key), and meticulously crafted environmental assets are brought together and fully rendered. I applied the final polish, which includes rendering material textures, integrating atmospheric effects, and performing color grading. This ensures all elements blend harmoniously, resulting in an immersive, high-quality 2D background that meets the rigorous visual standards of the game and is ready for engine integration.",
         "images": [
           {
-            "tempId": "mr1ltwegl0q2s1s5nob",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881870/nurpadly-gallery/lx54hprwiijug8msixlj.jpg",
+            "tempId": "mr1m28k5ka8awzzte5",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782882258/nurpadly-gallery/mkdyqsd3g8uj3umh3dja.jpg",
             "caption": "FINAL01"
           },
           {
-            "tempId": "mr1lu4fdgy5pwcumky",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881880/nurpadly-gallery/retoxd6swlshd58sk6jh.jpg",
+            "tempId": "mr1m2ekqge2jnn0m2w4",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782882265/nurpadly-gallery/ngohx5cfvfitcqqarmyr.jpg",
             "caption": "FINAL02"
           }
         ]
