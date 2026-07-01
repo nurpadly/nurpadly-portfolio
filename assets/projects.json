@@ -1,5 +1,87 @@
 [
   {
+    "id": "mr1lun1effardji85cn",
+    "title": "BLUE ARCHIVE 02",
+    "tagline": "Game Background Productions for Game 2.5D",
+    "category": "game",
+    "year": "2026",
+    "client": "NEXON GAMES",
+    "platform": "Game 2.5D",
+    "assetCount": "1",
+    "tools": [
+      "Photoshop",
+      "Wacom Intuos Pro"
+    ],
+    "tags": [
+      "Anime Fantasy RPG"
+    ],
+    "description": "Project Description: 2D Background Art for Blue Archive Collaborating with Frepreaks Indonesia, I had the privilege of working as a 2D Background Artist for Blue Archive, a major title developed by Nexon Games. My role involved crafting several immersive 2D environment backgrounds for the game. I was responsible for the entire background production pipeline, which included establishing precise perspective layouts and vanishing points, designing environmental assets, and executing the final rendering and lighting. The artwork displayed here is one of the official 2D backgrounds I delivered for the project.",
+    "coverUrl": "https://nurpadly-portfolio.netlify.app/admin-projects",
+    "steps": [
+      {
+        "id": "mr1kb52i4fq3bqd8qt3",
+        "title": "Sketch & Composition",
+        "description": "Rough Sketch & Color Key Process This stage showcases the initial rough sketch and the establishment of the perspective grid and vanishing points. Locking down an accurate perspective is a crucial foundational step to ensure a structurally flawless final image. Alongside the layout, the process involves a background color key (BG Key) to define the time of day and the overall atmosphere. Typically, the client or Art Director provides this key to align the artwork with their specific thematic vision. However, in cases where a color key or mood board is not provided, I can confidently develop an original lighting and color scenario from scratch. Drawing on my extensive experience, I ensure the lighting, color palette, and mood perfectly match the project's needs before moving forward to the final rendering phase.",
+        "images": [
+          {
+            "tempId": "mr1kdym8om89m3p4dz",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782879446/nurpadly-gallery/vfwlilda7ytiedfrtscf.jpg",
+            "caption": "01"
+          },
+          {
+            "tempId": "mr1ke654izs6xm6r3p",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782879455/nurpadly-gallery/g4w44ywhoezcyedg5saf.jpg",
+            "caption": "02"
+          }
+        ]
+      },
+      {
+        "id": "mr1kb52im99ea67mfq",
+        "title": "Props Design",
+        "description": "Environmental Asset Creation & Set Dressing Beyond establishing the foundational layout, crafting high-quality environmental assets is a crucial phase in completing a full 2D background project. This process involves designing and illustrating various supporting elements that populate the scene, adding depth, narrative context, and visual richness to the environment. I meticulously ensure that every individual asset seamlessly integrates with the established perspective grid, lighting scenario, and overall art direction. This attention to detail transforms a structural layout into a vibrant, lived-in, and believable world, ultimately bringing the final illustration to life and elevating the overall quality of the game's visual storytelling.",
+        "images": [
+          {
+            "tempId": "mr1lo7n7l7dnbq3aci8",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881602/nurpadly-gallery/u21n6lmzepqgodcntntd.jpg",
+            "caption": "05"
+          },
+          {
+            "tempId": "mr1lo7n5muguonwm8qr",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881602/nurpadly-gallery/numdcgpbfhbmi1ul12hz.jpg",
+            "caption": "04"
+          },
+          {
+            "tempId": "mr1lo7n8x9ssiywf72j",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881602/nurpadly-gallery/ex1gktzyxgncd6jyjcax.jpg",
+            "caption": "06"
+          },
+          {
+            "tempId": "mr1lo7n8av58jub01j6",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881602/nurpadly-gallery/sdorcdxejqwt0lu8bx3i.jpg",
+            "caption": "07"
+          }
+        ]
+      },
+      {
+        "id": "mr1kb52i8o7vfl1nv",
+        "title": "2D Background Final",
+        "description": "Final Render & Polish This image represents the culmination of the entire background production pipeline. In this final stage, the foundational layout, tailored lighting scenario (BG key), and meticulously crafted environmental assets are brought together and fully rendered. I applied the final polish, which includes rendering material textures, integrating atmospheric effects, and performing color grading. This ensures all elements blend harmoniously, resulting in an immersive, high-quality 2D background that meets the rigorous visual standards of the game and is ready for engine integration.",
+        "images": [
+          {
+            "tempId": "mr1ltwegl0q2s1s5nob",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881870/nurpadly-gallery/lx54hprwiijug8msixlj.jpg",
+            "caption": "FINAL01"
+          },
+          {
+            "tempId": "mr1lu4fdgy5pwcumky",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782881880/nurpadly-gallery/retoxd6swlshd58sk6jh.jpg",
+            "caption": "FINAL02"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "mr0qm91jly36d42jyk8",
     "title": "BLUE ARCHIVE",
     "tagline": "Game Background Productions for Game 2.5D",
