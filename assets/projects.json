@@ -83,9 +83,14 @@
         "description": "Final Render & Polish\n\nThis image represents the culmination of the entire background production pipeline. In this final stage, the foundational layout, tailored lighting scenario (BG key), and meticulously crafted environmental assets are brought together and fully rendered. I applied the final polish, which includes rendering material textures, integrating atmospheric effects, and performing color grading. This ensures all elements blend harmoniously, resulting in an immersive, high-quality 2D background that meets the rigorous visual standards of the game and is ready for engine integration.",
         "images": [
           {
-            "tempId": "mr1bt8hc71tcet193ae",
-            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782865045/nurpadly-gallery/exiupbssanze5nl530oy.png",
-            "caption": "03"
+            "tempId": "mr1hfwlde1yvfu0vuzf",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782874498/nurpadly-gallery/a4bozls85kddnqs6atyg.jpg",
+            "caption": "FINAL01"
+          },
+          {
+            "tempId": "mr1hg4y4844xmu2u49q",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1782874509/nurpadly-gallery/wvmreopvdsiqqoeaoqs6.jpg",
+            "caption": "FINAL02"
           }
         ]
       }
