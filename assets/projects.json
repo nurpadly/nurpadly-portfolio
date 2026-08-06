@@ -1,5 +1,103 @@
 [
   {
+    "id": "msh26gcqtqjb691j8q",
+    "title": "Japanese High School Classroom - Environment & Props",
+    "tagline": "anime background, school classroom, environment art, layout design, perspective, prop design, texturing, camera panning, visual development, animation pipeline",
+    "category": "animation",
+    "year": "2026",
+    "client": "Indie Studio",
+    "platform": "Standard 2D Animation Pipeline",
+    "assetCount": "1 Layout/Perspective Sketch, 1 Main Panoramic Background, 4 Detailed Props, 3 Custom Textures",
+    "tools": [
+      "Photoshop",
+      "Wacom Intuos Pro",
+      "3D Sketchup",
+      "Gemini Ai"
+    ],
+    "tags": [
+      "anime background",
+      "school classroom",
+      "environment art",
+      "layout design",
+      "perspective",
+      "prop design",
+      "texturing",
+      "camera panning",
+      "visual development",
+      "animation pipeline"
+    ],
+    "description": "This project showcases the complete visual development of a traditional Japanese high school classroom designed for an anime production.\n\nThe workflow begins with a comprehensive structural layout, establishing accurate perspective grids and vanishing points. This foundational sketch meticulously plans out camera framing for panning shots (PAN) and designates specific foreground and midground elements into separate \"Book\" layers. This industry-standard approach ensures perfect spatial depth and facilitates smooth parallax scrolling.\n\nFrom this solid foundation, the environment is further developed into modular components. It involves the detailed design and rendering of individual props—such as student desks, chairs, and rear locker cabinets—alongside the creation of custom material textures for floors and surfaces.\n\nBy separating these assets and applying high-quality texturing based on a strict perspective layout, the environment offers immense flexibility for character integration and animation layering. The final output is an authentic, highly detailed anime-style background ready to be seamlessly integrated into a standard 2D animation pipeline.",
+    "coverUrl": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785992896/nurpadly-gallery/p73vgqobonpmmxlpmyxt.jpg",
+    "steps": [
+      {
+        "id": "msh1yf0jw4ntpz4bp6",
+        "title": "Sketch & Composition",
+        "description": "Sketch",
+        "images": [
+          {
+            "tempId": "msh22eq3nn0nv3kmlkp",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785992912/nurpadly-gallery/wpou3orbk3pwauh7aq6s.jpg",
+            "caption": "SKETCH"
+          }
+        ]
+      },
+      {
+        "id": "msh1yf0jdi4na5klp4",
+        "title": "Props Design",
+        "description": "Props Design",
+        "images": [
+          {
+            "tempId": "msh25dnmgh1zuv43gg",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993051/nurpadly-gallery/uoqtqxvyx4fiwyonbx4m.jpg",
+            "caption": "PROPS1"
+          },
+          {
+            "tempId": "msh25dnnt4cocc1cvx8",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993051/nurpadly-gallery/pyrqoswco2cf0fe7ueap.jpg",
+            "caption": "PROPS4"
+          },
+          {
+            "tempId": "msh25dnmbskwbdtg5yv",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993051/nurpadly-gallery/y8l0x2kahnjehgpjlxls.jpg",
+            "caption": "PROPS2"
+          },
+          {
+            "tempId": "msh25dnno7cp4wmyj39",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993051/nurpadly-gallery/mf8gapy5y8d0w955mut8.jpg",
+            "caption": "PROPS3"
+          },
+          {
+            "tempId": "msh25dnse36j4mnshin",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993051/nurpadly-gallery/rvtrmhuqufcvyg5yczgi.jpg",
+            "caption": "PROPS6-TEXTURE"
+          },
+          {
+            "tempId": "msh25dnsd8xt8tvnqn",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993051/nurpadly-gallery/jbo6wpf7acdqztmarq63.jpg",
+            "caption": "PROPS5"
+          },
+          {
+            "tempId": "msh25dntkmr6aa21l4",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993051/nurpadly-gallery/olwlolcytpxlz3qi2kro.jpg",
+            "caption": "PROPS7-TEXTURE2"
+          }
+        ]
+      },
+      {
+        "id": "msh1yf0ji2war0e70es",
+        "title": "2D Background Final",
+        "description": "Final BG",
+        "images": [
+          {
+            "tempId": "msh261pv911ig4w32nt",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1785993082/nurpadly-gallery/szbyb93ir07htojqyy5z.jpg",
+            "caption": "FINAL"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "mr1lun1effardji85cn",
     "title": "BLUE ARCHIVE 02",
     "tagline": "Game Background Productions for Game 2.5D",
