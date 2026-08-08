@@ -1,5 +1,85 @@
 [
   {
+    "id": "msk3ay2dbttcr6kpsnb",
+    "title": "Panoramic Sunset Cityscape - Layered Environment",
+    "tagline": "High-quality 2D panoramic background design with separated multi-plane layers for parallax animation.",
+    "category": "animation",
+    "year": "2026",
+    "client": "-",
+    "platform": "Standard 2D Animation Pipeline",
+    "assetCount": "1 Layout Sketch, 1 Assembled Panoramic Background, 4 Separated Asset Layers (Sky, Mountains, Cityscape, Trees)",
+    "tools": [
+      "Photoshop",
+      "Wacom Intuos Pro"
+    ],
+    "tags": [
+      "anime background",
+      "sunset cityscape",
+      "panoramic",
+      "environment art",
+      "layout design",
+      "parallax layering",
+      "visual development",
+      "2d art",
+      "animation pipeline"
+    ],
+    "description": "This project highlights the creation of a sweeping, panoramic sunset cityscape tailored for professional 2D animation.\n\nThe development process begins with a precise structural layout sketch (genga), mapping out a wide-angle perspective designed specifically for dynamic camera panning (PAN) across a vast environment.\n\nTo achieve a realistic sense of depth and scale during animation, the background is meticulously deconstructed into multiple distinct layers. Individual elements—including the foreground trees, the intricate midground town, the distant mountain range, and the expansive sunset sky—are illustrated and rendered as separate assets.\n\nThis strategic, multi-layered approach allows for smooth parallax scrolling and effortless integration within compositing software like After Effects. The final result is a vibrant, atmospheric, and production-ready anime environment.",
+    "coverUrl": "https://res.cloudinary.com/dwahzqqst/image/upload/v1786176282/nurpadly-gallery/fzloct7qahkct7l1spoz.jpg",
+    "steps": [
+      {
+        "id": "msk24t2mw73pa0qto",
+        "title": "Sketch & Composition",
+        "description": "Sketch & Composition",
+        "images": [
+          {
+            "tempId": "msk39g1910drjdvr9q4",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1786176319/nurpadly-gallery/vutoarh7rjlun1xbzl40.jpg",
+            "caption": "02.Sketch"
+          }
+        ]
+      },
+      {
+        "id": "msk24t2m6zf2v2fdktq",
+        "title": "Props Design",
+        "description": "",
+        "images": [
+          {
+            "tempId": "msk3ad4m0jy2txc60d9",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1786176361/nurpadly-gallery/flidbllnammgazfmcere.jpg",
+            "caption": "03.-PROPS-DESIGN-01"
+          },
+          {
+            "tempId": "msk3ad4nvclh2kslk7n",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1786176362/nurpadly-gallery/g24gnmwdkc8saqadxdjp.jpg",
+            "caption": "05.-PROPS-DESIGN-03"
+          },
+          {
+            "tempId": "msk3ad4nz3wcukofxwq",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1786176362/nurpadly-gallery/cvgqto29ltdme0ywlnix.jpg",
+            "caption": "06.-PROPS-DESIGN-04"
+          },
+          {
+            "tempId": "msk3ad4m9g8neyd0xeo",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1786176363/nurpadly-gallery/nnu4x1pfffs5uhc2hhao.jpg",
+            "caption": "04.-PROPS-DESIGN-02"
+          }
+        ]
+      },
+      {
+        "id": "msk24t2m05tb3q21q2as",
+        "title": "2D Background Final",
+        "description": "",
+        "images": [
+          {
+            "tempId": "msk3aq6b69y97gjm93s",
+            "url": "https://res.cloudinary.com/dwahzqqst/image/upload/v1786176381/nurpadly-gallery/ajfi4lyrmh2z2pxrwmie.png",
+            "caption": "FINAL BG"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "msh26gcqtqjb691j8q",
     "title": "Japanese High School Classroom - Environment & Props",
     "tagline": "anime background, school classroom, environment art, layout design, perspective, prop design, texturing, camera panning, visual development, animation pipeline",
